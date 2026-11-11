@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+	/* Provisional brand palette — warm off-white base with a clay accent,
+	   in the spirit of claude.com/product/claude-code. */
+	--color-brand-bg: #faf8f5;
+	--color-brand-surface: #f1ece4;
+	--color-brand-border: #e3dcd0;
+	--color-brand-foreground: #1a1816;
+	--color-brand-muted: #6b6560;
+	--color-brand-accent: #d97757;
+	--color-brand-accent-foreground: #1a1816;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
