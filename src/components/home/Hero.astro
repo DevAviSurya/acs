@@ -1,0 +1,52 @@
+---
+import heroImage from '../../assets/images/hero-abstract.svg';
+import { allServices } from '../../data/services';
+---
+
+<section class="relative isolate flex min-h-[600px] items-center overflow-hidden bg-[#201e1b] py-28 sm:min-h-[700px] lg:min-h-[800px]">
+	<img
+		src={heroImage.src}
+		width={heroImage.width}
+		height={heroImage.height}
+		alt=""
+		fetchpriority="high"
+		class="absolute inset-0 -z-20 h-full w-full object-cover"
+	/>
+	<div class="absolute inset-0 -z-10 bg-gradient-to-r from-[#201e1b] via-[#201e1b]/85 to-[#201e1b]/25"></div>
+	<div class="absolute inset-0 -z-10 bg-gradient-to-t from-[#201e1b] via-transparent to-transparent"></div>
+
+	<div class="relative mx-auto w-full max-w-7xl px-6 lg:px-8">
+		<div class="max-w-2xl" data-animate>
+			<p class="text-sm font-semibold uppercase tracking-[0.25em] text-white/50">Attribute Corporate Solutions</p>
+			<h1 class="mt-5 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+				Helping Businesses Build, Digitize &amp; Grow
+			</h1>
+			<p class="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
+				We help small and medium-sized businesses establish a strong digital presence, streamline operations
+				through smart automation, and strengthen their brand — enabling them to operate more efficiently,
+				reach more customers, and unlock new growth opportunities.
+			</p>
+
+			<div class="mt-10 flex flex-wrap items-center gap-4">
+				<a
+					href="/contact"
+					class="rounded-full bg-brand-bg px-6 py-3 text-sm font-semibold text-brand-foreground transition-opacity hover:opacity-90"
+				>
+					Request a Quote
+				</a>
+				<a
+					href="/services"
+					class="rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-white/50 hover:bg-white/5"
+				>
+					Explore Services
+				</a>
+			</div>
+
+			<ul class="mt-12 flex flex-wrap gap-x-6 gap-y-2 text-xs font-medium uppercase tracking-wider text-white/45">
+				{allServices.map((service) => (
+					<li>{service.title}</li>
+				))}
+			</ul>
+		</div>
+	</div>
+</section>

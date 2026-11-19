@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-	/* Provisional brand palette — warm off-white base with a clay accent,
-	   in the spirit of claude.com/product/claude-code. */
-	--color-brand-bg: #faf8f5;
-	--color-brand-surface: #f1ece4;
-	--color-brand-border: #e3dcd0;
-	--color-brand-foreground: #1a1816;
-	--color-brand-muted: #6b6560;
-	--color-brand-accent: #d97757;
-	--color-brand-accent-foreground: #1a1816;
+	/* Brand palette — white and charcoal black, and shades of those two,
+	   following monks.com's color theme and combination. No hue accent:
+	   "brand-accent" is charcoal itself, used for emphasis via contrast and
+	   weight rather than color. */
+	--color-brand-bg: #FFF;
+	--color-brand-surface: #e1ddd4;
+	--color-brand-border: #d2cdc2;
+	--color-brand-foreground: #201e1b;
+	--color-brand-muted: #68655f;
+	--color-brand-accent: #201e1b;
+	--color-brand-accent-foreground: #eae8e4;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -21,4 +23,92 @@
 		transition-duration: 0.01ms !important;
 		scroll-behavior: auto !important;
 	}
+}
+
+/* Added by src/scripts/animations.ts only once an element is observed, so
+   content is never hidden without JS. */
+.reveal-on-scroll {
+	opacity: 0;
+	transform: translateY(16px);
+	transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-on-scroll.is-visible {
+	opacity: 1;
+	transform: none;
+}
+
+
+
+
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Full screen height */
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures full-bleed scaling without distortion */
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.7)
+  );
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 800px;
+  padding: 0 24px;
+}
+
+.hero-content h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+
+.hero-content p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  opacity: 0.9;
+  margin-bottom: 32px;
+}
+
+.hero-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background-color: #ffffff;
+  color: #111111;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
 }

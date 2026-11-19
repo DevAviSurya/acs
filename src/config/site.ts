@@ -16,7 +16,7 @@ export const siteConfig = {
 	locale: 'en_US',
 	contact: {
 		// TODO: replace with the client's real contact details.
-		email: 'info@attributecorporatesolutions.com',
-		phone: '+1 (000) 000-0000',
+		email: 'contact@attribute.solutions',
+		phone: '+1 (778) 628-6251',
 	},
 } as const;

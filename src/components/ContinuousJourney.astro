@@ -1,0 +1,84 @@
+<section class="journey" aria-label="Attribute creative process, from architectural design to brand experience">
+ <div class="journey-stage" data-journey></div>
+ <div class="journey-top"><span>ATTRIBUTE / THE MAKING OF AN EXPERIENCE</span><span data-phase>01 — ARCHITECTURE</span></div>
+ <div class="journey-bottom"><span>FROM IDEA TO IMPACT</span><div class="journey-actions"><button type="button" data-toggle aria-label="Pause animation">PAUSE</button><button type="button" data-replay aria-label="Replay animation">REPLAY ↻</button></div></div>
+ <div class="journey-track"><div data-progress></div></div>
+ <div class="journey-fallback" aria-hidden="true">IDEA <span>→</span> DESIGN <span>→</span> BUILD <span>→</span> INTELLIGENCE <span>→</span> BRAND</div>
+</section>
+<style>
+.journey{position:relative;isolation:isolate;width:100%;aspect-ratio:16/8.1;min-height:330px;background:#f7f7f5;color:#181818;overflow:hidden;font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif}.journey-stage{position:absolute;inset:0;z-index:1}.journey-stage canvas{display:block;width:100%;height:100%}.journey-top,.journey-bottom{position:absolute;z-index:3;left:clamp(18px,4vw,65px);right:clamp(18px,4vw,65px);display:flex;justify-content:space-between;align-items:center;pointer-events:none;font-size:clamp(9px,.75vw,12px);letter-spacing:.13em;font-weight:600}.journey-top{top:clamp(20px,3.2vw,46px)}.journey-bottom{bottom:clamp(25px,3.5vw,46px);color:#6c6c6c}.journey-actions{display:flex;gap:8px;pointer-events:auto}.journey-actions button{border:1px solid #d4d4d2;border-radius:30px;padding:9px 12px;background:#ffffffb8;color:#222;cursor:pointer;font:600 10px Inter,Arial,sans-serif;letter-spacing:.1em}.journey-actions button:hover{background:#222;color:white}.journey-track{position:absolute;z-index:3;bottom:0;height:2px;background:#e0e0de;width:100%}.journey-track div{height:100%;width:0;background:#202020}.journey-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:12px;font-weight:700;font-size:clamp(11px,2vw,22px);letter-spacing:.04em;color:#555}.journey-fallback span{color:#aaa}@media(max-width:650px){.journey{aspect-ratio:4/4;min-height:330px}.journey-top,.journey-bottom{letter-spacing:.035em;font-size:8px}.journey-bottom>span{max-width:40%}.journey-fallback{flex-wrap:wrap;padding:50px}}@media(prefers-reduced-motion:reduce){.journey-actions{display:none}}
+</style>
+<script>
+import * as THREE from 'three';
+const root=document.querySelector('[data-journey]');
+if(root && !root.dataset.ready){root.dataset.ready='1';const wrap=root.closest('.journey');const phaseEl=wrap.querySelector('[data-phase]');const progressEl=wrap.querySelector('[data-progress]');const pauseBtn=wrap.querySelector('[data-toggle]');const replayBtn=wrap.querySelector('[data-replay]');const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const duration=24000;let renderer,scene,camera,clock=0,raf=0,paused=false,last=0,observer,ro;
+const clamp=(v)=>Math.max(0,Math.min(1,v)),ease=(a,b,v)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t)},mix=(a,b,t)=>a+(b-a)*t;
+const white=0xffffff,ink=0x202124,grey=0x8d9194;
+const material=(color,metalness=.02,roughness=.7)=>new THREE.MeshStandardMaterial({color,metalness,roughness,side:THREE.DoubleSide});
+const lineMat=(color=0x92979a,opacity=.5)=>new THREE.LineBasicMaterial({color,transparent:true,opacity,depthTest:false});
+function box(group,w,h,d,x,y,z,color=white,metal=.02,rough=.7){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material(color,metal,rough));m.position.set(x,y,z);group.add(m);return m}
+function edge(group,x1,y1,z1,x2,y2,z2,color=0x9ca0a3,opacity=.55){const o=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x1,y1,z1),new THREE.Vector3(x2,y2,z2)]),lineMat(color,opacity));group.add(o);return o}
+function text(group,str,x,y,z,w=3,{size=66,color='#252525',weight='600',align='left'}={}){const c=document.createElement('canvas');c.width=1024;c.height=128;const ctx=c.getContext('2d');ctx.clearRect(0,0,1024,128);ctx.font=`${weight} ${size}px Arial,sans-serif`;ctx.fillStyle=color;ctx.textBaseline='middle';ctx.textAlign=align;ctx.fillText(str,align==='center'?512:20,64);const texture=new THREE.CanvasTexture(c);texture.colorSpace=THREE.SRGBColorSpace;const mesh=new THREE.Mesh(new THREE.PlaneGeometry(w,w/8),new THREE.MeshBasicMaterial({map:texture,transparent:true,side:THREE.DoubleSide,depthWrite:false}));mesh.position.set(x+(align==='center'?0:w/2),y,z);group.add(mesh);return mesh}
+function roundedLine(group,x,y,w,z=.2){box(group,w,.055,.025,x+w/2,y,z,0xd3d6d7)}
+function stage(x){const g=new THREE.Group();g.position.x=x;scene.add(g);return g}
+function design(g){const board=new THREE.Group();g.add(board);board.rotation.y=-.17;board.rotation.x=.08;box(board,10.5,5.9,.12,0,0,0,0xffffff);const grid=new THREE.Group();board.add(grid);for(let i=0;i<=12;i++){const x=-4.95+i*9.9/12;edge(grid,x,-2.6,.10,x,2.6,.10,0xb7bdc0,.6)}for(let i=0;i<=8;i++){const y=-2.6+i*5.2/8;edge(grid,-4.95,y,.1,4.95,y,.1,0xc5c9cb,.45)}const layers=new THREE.Group();board.add(layers);box(layers,9.75,.4,.06,0,2.12,.2,0xe9eaea);box(layers,4.15,.45,.07,-2.72,1.05,.3,0x2b2d2f);roundedLine(layers,-4.75,.42,3.3,.35);roundedLine(layers,-4.75,.05,2.75,.35);box(layers,4.2,2.5,.12,2.6,.25,.3,0x292b2e);for(let i=0;i<3;i++){box(layers,2.92,.92,.08,-3.32+i*3.32,-1.8,.3,0xe5e6e5)}text(layers,'ATTRIBUTE',-4.7,2.14,.37,2.2,{size:60,weight:'700'});text(layers,'BUILT FROM AN IDEA',-4.7,1.1,.4,4.3,{size:57,weight:'700',color:'#ffffff'});return {board,grid,layers}}
+function development(g){const main=new THREE.Group();g.add(main);main.rotation.y=-.12;box(main,9.9,5.85,.13,0,0,0,0x17191d);box(main,9.75,.42,.02,0,2.63,.1,0x292c30);text(main,'●   ●   ●     attribute / studio.ts',-4.65,2.63,.15,6.9,{size:43,color:'#c6c8cb'});box(main,2.1,4.7,.03,-3.75,-.18,.12,0x212329);text(main,'EXPLORER',-4.65,1.85,.17,1.5,{size:55,color:'#b5b8bc'});['src','components','Hero.astro','Workflows.ts','package.json'].forEach((s,i)=>text(main,'›  '+s,-4.55,1.3-i*.54,.17,2.3,{size:42,color:'#c5c7ca'}));const codes=['export const studio = {','  design: "intentional",','  platform: "Astro",','  intelligence: "AI",','  brand: "everywhere"','};'];codes.forEach((s,i)=>text(main,s,-2.25,1.68-i*.67,.18,6.7,{size:53,color:i%2?'#b8c6c3':'#f4f4f4',weight:'500'}));const preview=new THREE.Group();g.add(preview);preview.position.set(3.7,-.5,1.5);preview.rotation.y=.12;box(preview,4.25,4.5,.18,0,0,0,0xffffff);text(preview,'ATTRIBUTE',-1.8,1.75,.14,2.7,{size:70});text(preview,'Ideas made',-1.8,.55,.14,3.8,{size:96,weight:'700'});text(preview,'real.',-1.8,-.05,.14,3.7,{size:96,weight:'700'});box(preview,2.1,.45,.07,-.7,-1.2,.16,ink);text(preview,'EXPLORE WORK',-1.63,-1.2,.21,2.15,{size:50,color:'#ffffff'});return {main,preview}}
+function automation(g){const hub=new THREE.Group();g.add(hub);const nodes=[];const positions=[[-3.8,1.8],[-3.9,-1.65],[0,2.25],[0,-2.3],[3.9,1.55],[3.9,-1.55]];const names=['CUSTOMER','CONTENT','AI CORE','WORKFLOW','INSIGHTS','DELIVERY'];positions.forEach(([x,y],i)=>{const n=new THREE.Group();n.position.set(x,y,0);hub.add(n);box(n,2.9,1.15,.28,0,0,0,i===2?0x202225:0xffffff,i===2?.22:.05,.4);text(n,names[i],-1.28,.05,.19,2.5,{size:63,color:i===2?'#ffffff':'#292929'});nodes.push(n)});const links=[[0,2],[1,3],[2,3],[2,4],[3,5]];links.forEach(([a,b])=>{const p=positions[a],q=positions[b];edge(hub,p[0],p[1],-.15,q[0],q[1],-.15,0x757a7d,.65)});return {hub,nodes}}
+function growth(g){const dash=new THREE.Group();g.add(dash);dash.rotation.y=-.12;box(dash,10.5,5.95,.12,0,0,0,0xffffff);box(dash,10.5,.52,.07,0,2.71,.1,0x242629);text(dash,'ATTRIBUTE   /   PERFORMANCE',-4.9,2.7,.16,6.8,{size:54,color:'#ffffff'});text(dash,'Growth, made measurable.',-4.8,1.9,.17,7.5,{size:70,weight:'700'});for(let i=0;i<3;i++){box(dash,2.92,1.25,.1,-3.27+i*3.27,.62,.18,0xf0f1f0);text(dash,['VISIBILITY','ENGAGEMENT','CONVERSION'][i],-4.53+i*3.27,.85,.26,2.7,{size:43,color:'#777777'});text(dash,['+32%','+48%','+21%'][i],-4.53+i*3.27,.38,.26,2.5,{size:105,weight:'700'})}const pts=[[-4.65,-2.1],[-3.55,-1.6],[-2.45,-1.8],[-1.35,-1.05],[-.25,-1.2],[.85,-.35],[1.95,-.8],[3.05,.05],[4.55,.35]];pts.slice(1).forEach((p,i)=>edge(dash,pts[i][0],pts[i][1],.23,p[0],p[1],.23,0x252525,.9));return {dash}}
+function merchandise(g){const merch=new THREE.Group();g.add(merch);const items=[];
+// Procedural material studies. Production photorealism requires professionally authored GLB models.
+const tee=new THREE.Group();tee.position.set(-3.8,.1,0);merch.add(tee);const shirtShape=new THREE.Shape();[[-1.1,1.55],[-1.9,1.03],[-2.45,.25],[-1.5,-.35],[-1.2,.15],[-1.2,-2.1],[1.2,-2.1],[1.2,.15],[1.5,-.35],[2.45,.25],[1.9,1.03],[1.1,1.55],[.5,1.36],[-.5,1.36]].forEach(([x,y],i)=>i?shirtShape.lineTo(x,y):shirtShape.moveTo(x,y));shirtShape.closePath();const shirt=new THREE.Mesh(new THREE.ExtrudeGeometry(shirtShape,{depth:.18,bevelEnabled:true,bevelThickness:.045,bevelSize:.06,bevelSegments:3}),material(0x202123,.02,.95));shirt.scale.set(.67,.67,.67);tee.add(shirt);text(tee,'ATTRIBUTE',-1.05,.12,.25,2.1,{size:56,color:'#ffffff'});items.push(tee);
+const bottle=new THREE.Group();bottle.position.set(-.7,-.3,0);merch.add(bottle);const bottleBody=new THREE.Mesh(new THREE.CylinderGeometry(.63,.69,3.55,48),material(0x242629,.45,.31));bottle.add(bottleBody);box(bottle,.88,.38,.88,0,1.97,0,0x111214,.65,.26);text(bottle,'ATTRIBUTE',-.65,.05,.7,1.35,{size:65,color:'#ffffff'});items.push(bottle);
+const mug=new THREE.Group();mug.position.set(2.1,-.65,0);merch.add(mug);mug.add(new THREE.Mesh(new THREE.CylinderGeometry(1.02,.89,2.35,48,1,false),material(0xf5f5f2,.05,.24)));const handle=new THREE.Mesh(new THREE.TorusGeometry(.72,.19,16,40,Math.PI*1.65),material(0xf5f5f2,.05,.23));handle.position.set(1.04,.05,0);handle.rotation.z=-.75;mug.add(handle);text(mug,'ATTRIBUTE',-.85,.12,1.04,1.7,{size:65});items.push(mug);
+const pack=new THREE.Group();pack.position.set(4.7,-.15,-.5);merch.add(pack);box(pack,2.4,3.45,.9,0,0,0,0x242628,.03,.9);box(pack,2.15,1.25,1.0,0,-.77,.1,0x343638,.02,.9);const strap=new THREE.Mesh(new THREE.TorusGeometry(.69,.16,12,32,Math.PI),material(0x242628));strap.position.y=1.75;pack.add(strap);text(pack,'ATTRIBUTE',-1.02,.65,.56,2.05,{size:57,color:'#ffffff'});items.push(pack);return {merch,items}}
+try{scene=new THREE.Scene();scene.background=new THREE.Color(0xf7f7f5);camera=new THREE.PerspectiveCamera(32,1,.1,300);camera.position.set(0,1,22);renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.6;root.appendChild(renderer.domElement);scene.add(new THREE.HemisphereLight(0xffffff,0xb9b9b9,3.2));const key=new THREE.DirectionalLight(0xffffff,4.3);key.position.set(-7,9,14);scene.add(key);const fill=new THREE.DirectionalLight(0xffffff,2);fill.position.set(8,2,5);scene.add(fill);
+const groups=[stage(0),stage(0),stage(0),stage(0),stage(0)];const objects=[design(groups[0]),development(groups[1]),automation(groups[2]),growth(groups[3]),merchandise(groups[4])];
+// All scenes share ONE centered stage. Crossfades happen in depth, never left-to-right.
+// Clone material per mesh so visibility transitions do not affect other objects.
+const originalOpacity = new WeakMap();
+groups.forEach(group=>group.traverse(obj=>{if(obj.material){obj.material=obj.material.clone();obj.material.transparent=true;obj.material.depthWrite=false;originalOpacity.set(obj,obj.material.opacity);}}));
+const labels=['01 — ARCHITECTURE','02 — DEVELOPMENT','03 — INTELLIGENCE','04 — GROWTH','05 — BRAND EXPERIENCE'];
+function resize(){
+ const w=Math.max(root.clientWidth,1),h=Math.max(root.clientHeight,1);
+ renderer.setSize(w,h,false);camera.aspect=w/h;
+ // Keep all 10.5 x 6 panels visible with safe margins, even on portrait phones.
+ camera.fov=w<650?38:32;camera.updateProjectionMatrix();
+ const v=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+ const fitHeight=7.9/(2*v),fitWidth=13.6/(2*v*camera.aspect);
+ camera.userData.fitZ=Math.max(fitHeight,fitWidth)+2.8;
+}
+function setVisibility(group,alpha){
+ group.visible=alpha>.001;
+ group.traverse(obj=>{if(obj.material){obj.material.opacity=(originalOpacity.get(obj)??1)*alpha;}});
+}
+function draw(t){
+ const p=reduced?.06:(t%duration)/duration;
+ const phase=p*5, i=Math.min(4,Math.floor(phase)),local=phase-i;
+ const blend=ease(.73,.99,local);
+ const next=(i+1)%5;
+ groups.forEach((g,j)=>{
+   const a=j===i?1-blend:j===next?blend:0;
+   setVisibility(g,a);
+   // Each scene emerges from depth, centered; no lateral scrolling.
+   g.position.set(0,0,j===next?-1.2*(1-blend):j===i?1.0*blend:0);
+   g.scale.setScalar(j===next?.96+.04*blend:j===i?1+.025*blend:1);
+   g.rotation.y=(j===i||j===next)?Math.sin(p*Math.PI*2)*.012:0;
+ });
+ const z=camera.userData.fitZ;
+ camera.position.set(Math.sin(p*Math.PI*2)*.16,.4+Math.sin(p*Math.PI*4)*.08,z);
+ camera.lookAt(0,0,0);
+ objects[0].board.rotation.y=-.07+Math.sin(p*10)*.025;
+ objects[0].layers.position.z=.15+ease(.01,.15,p)*.18;
+ objects[1].preview.position.z=1.4+Math.sin(p*12)*.06;
+ objects[2].nodes.forEach((n,j)=>{n.position.z=Math.sin(p*18+j)*.1});
+ objects[4].items.forEach((n,j)=>{n.rotation.y=.1+Math.sin(p*7+j)*.09;n.position.y=[.1,-.3,-.65,-.15][j]+Math.sin(p*13+j)*.07});
+ phaseEl.textContent=labels[i];progressEl.style.width=`${p*100}%`;
+ renderer.render(scene,camera);
+}
+function loop(now){raf=requestAnimationFrame(loop);if(!paused){clock+=Math.min(50,now-last||16);draw(clock)}last=now}
+resize();ro=new ResizeObserver(resize);ro.observe(root);observer=new IntersectionObserver(([entry])=>{paused=!entry.isIntersecting;pauseBtn.textContent=paused?'PLAY':'PAUSE'},{threshold:.05});observer.observe(wrap);if(reduced){draw(duration*.08);pauseBtn.disabled=true}else raf=requestAnimationFrame(loop);
+pauseBtn.addEventListener('click',()=>{paused=!paused;pauseBtn.textContent=paused?'PLAY':'PAUSE'});replayBtn.addEventListener('click',()=>{clock=0;paused=false;pauseBtn.textContent='PAUSE';draw(0)});wrap.querySelector('.journey-fallback').style.display='none';document.addEventListener('astro:before-swap',()=>{cancelAnimationFrame(raf);observer.disconnect();ro.disconnect();scene.traverse(o=>{o.geometry?.dispose();if(o.material){const ms=Array.isArray(o.material)?o.material:[o.material];ms.forEach(m=>{m.map?.dispose();m.dispose()})}});renderer.dispose();renderer.domElement.remove()},{once:true});
+}catch(e){console.error('Attribute showreel fallback',e);root.style.display='none'}
+}
+</script>

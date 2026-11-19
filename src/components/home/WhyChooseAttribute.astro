@@ -1,0 +1,52 @@
+---
+import Users from '@lucide/astro/icons/users';
+import Zap from '@lucide/astro/icons/zap';
+import ShieldCheck from '@lucide/astro/icons/shield-check';
+import MapPin from '@lucide/astro/icons/map-pin';
+
+const reasons = [
+	{
+		icon: Users,
+		title: 'One point of contact',
+		description: 'A single team coordinates every discipline, so you are never passed between vendors.',
+	},
+	{
+		icon: Zap,
+		title: 'Responsive by default',
+		description: 'Clear timelines and direct communication from first brief to final delivery.',
+	},
+	{
+		icon: ShieldCheck,
+		title: 'Consistent quality',
+		description: 'The same standards applied whether the deliverable is code, artwork, or a finished product.',
+	},
+	{
+		icon: MapPin,
+		title: 'Local, accountable support',
+		description: 'A team you can reach directly, with ongoing support after the project ships.',
+	},
+];
+---
+
+<section class="bg-brand-surface py-20 sm:py-28" data-animate>
+	<div class="mx-auto max-w-7xl px-6 lg:px-8">
+		<div class="max-w-2xl">
+			<p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">Why Attribute</p>
+			<h2 class="mt-3 text-3xl font-semibold tracking-tight text-brand-foreground sm:text-4xl">
+				Built to be the only call you need to make
+			</h2>
+		</div>
+
+		<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+			{reasons.map((reason) => (
+				<div>
+					<div class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-accent/10 text-brand-accent">
+						<reason.icon class="h-5 w-5" aria-hidden="true" stroke-width={1.75} />
+					</div>
+					<h3 class="mt-5 text-base font-semibold text-brand-foreground">{reason.title}</h3>
+					<p class="mt-2 text-sm leading-relaxed text-brand-muted">{reason.description}</p>
+				</div>
+			))}
+		</div>
+	</div>
+</section>

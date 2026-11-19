@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Attribute Connected Hero — Preview</title><style>*{box-sizing:border-box}body{margin:0;background:#fff;font-family:system-ui,-apple-system,sans-serif} .preview-heading{text-align:center;padding:46px 20px 0}.preview-heading h1{font-size:clamp(32px,5vw,64px);margin:0;color:#1f2934;letter-spacing:-.065em;line-height:1.08}.preview-heading p{color:#65717c;margin:16px auto;max-width:670px;font-size:16px}.preview-heading .buttons{display:flex;gap:10px;justify-content:center;margin-top:24px}.buttons span{padding:12px 20px;border-radius:50px;background:#252c34;color:#fff;font-size:13px}.buttons span+span{color:#252c34;background:white;border:1px solid #d7dce0}
+  .ac-connected{--ink:#252c34;--muted:#86919c;--blue:#347fc4;position:relative;width:100%;max-width:1300px;margin:clamp(22px,3vw,46px) auto 0;color:var(--ink);isolation:isolate;}
+  .ac-stage{position:relative;width:100%;height:clamp(470px,48vw,610px);overflow:hidden;background:radial-gradient(ellipse 45% 48% at 50% 50%,#ebeff2 0%,#f7f9fa 47%,rgba(255,255,255,0) 87%),#fff;}
+  .ac-stage:before,.ac-stage:after{content:"";position:absolute;z-index:5;pointer-events:none;left:0;right:0;height:11%;}
+  .ac-stage:before{top:0;background:linear-gradient(#fff,transparent)}
+  .ac-stage:after{bottom:0;background:linear-gradient(transparent,#fff)}
+  .ac-stage-grid{position:absolute;inset:0;opacity:.45;mask-image:radial-gradient(ellipse 57% 55% at 50% 52%,#000 0%,transparent 100%);background-image:linear-gradient(to right,#d9e0e5 1px,transparent 1px),linear-gradient(to bottom,#d9e0e5 1px,transparent 1px);background-size:32px 32px;}
+  .ac-ambient{position:absolute;border-radius:50%;filter:blur(32px);pointer-events:none;opacity:.36;}.ac-ambient-one{width:260px;height:260px;background:#dcebf9;left:30%;top:29%}.ac-ambient-two{width:280px;height:280px;background:#ebecef;right:24%;bottom:12%}
+  .ac-architecture{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+  .ac-orbit-area{position:absolute;z-index:2;left:50%;top:50%;width:min(43%,435px);aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;}
+  .ac-core-halo{position:absolute;inset:4%;border:1px solid rgba(135,151,163,.24);border-radius:50%;box-shadow:0 0 0 22px rgba(250,251,252,.1),0 0 0 49px rgba(229,234,238,.11);}
+  .ac-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .6s ease;}
+  .ac-canvas.ac-ready{opacity:1}.ac-core-fallback{position:absolute;inset:0;perspective:850px;transition:opacity .3s ease;}.ac-core-fallback.ac-hidden{opacity:0;}
+  .ac-fallback-ring{position:absolute;left:50%;top:50%;border:5px solid transparent;border-radius:50%;box-shadow:inset 1px 1px 1px rgba(255,255,255,.45),4px 8px 10px rgba(33,45,55,.12);background:linear-gradient(#e9edef,#e9edef) padding-box,linear-gradient(110deg,#212a33,#a4abb1 42%,#2b323b 75%,#b7bfc7) border-box;}
+  .ac-ring-outer{width:76%;height:76%;transform:translate(-50%,-50%) rotate(-25deg) rotateY(66deg);animation:ac-fallback-outer 15s linear infinite;}
+  .ac-ring-middle{width:65%;height:65%;transform:translate(-50%,-50%) rotate(35deg) rotateX(64deg);animation:ac-fallback-mid 15s linear infinite;}
+  .ac-ring-inner{width:53%;height:53%;transform:translate(-50%,-50%) rotate(-30deg) rotateY(54deg);animation:ac-fallback-inner 15s linear infinite;}
+  .ac-center-mark{position:absolute;left:50%;top:50%;width:22%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(circle at 32% 25%,#5c6570,#222831 76%);border-radius:50%;border:1px solid #8c959e;box-shadow:0 10px 28px #1a263244,inset 0 2px 4px #fff4;display:grid;place-items:center;z-index:3;}
+  .ac-center-mark>span{color:white;font-size:clamp(25px,3.7vw,44px);font-weight:700;letter-spacing:-.09em;font-family:Arial,Helvetica,sans-serif;padding-right:4px;}.ac-dot{color:#7db4eb}
+  .ac-tick{position:absolute;width:4px;height:4px;background:#347fc4;border-radius:50%;box-shadow:0 0 0 4px #d2e4f2;}.ac-tick-n{left:50%;top:7%}.ac-tick-s{left:50%;bottom:7%}.ac-tick-e{right:7%;top:50%}.ac-tick-w{left:7%;top:50%}
+  .ac-module{position:absolute;z-index:3;width:clamp(205px,22%,265px);height:clamp(161px,15.7vw,197px);border:1px solid rgba(194,203,212,.75);background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(249,251,252,.95));border-radius:13px;padding:16px 17px;box-shadow:0 15px 38px rgba(35,53,65,.065),0 2px 8px rgba(35,53,65,.03),inset 0 1px 0 #fff;backdrop-filter:blur(12px);transform:translate3d(0,0,0);will-change:transform;}
+  .ac-web{left:6.5%;top:10%;}.ac-ai{right:6.5%;top:10%;}.ac-growth{left:6.5%;bottom:10%;}.ac-brand{right:6.5%;bottom:10%;}
+  .ac-module-top,.ac-module-foot,.ac-growth-caption{display:flex;align-items:center;justify-content:space-between;}.ac-module-no,.ac-module-foot,.ac-growth-caption,.ac-system-label{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:8px;letter-spacing:.085em;font-weight:650;color:#8e9aa6;}.ac-module-title{font:650 clamp(13px,1.25vw,17px)/1.2 system-ui,-apple-system,sans-serif;letter-spacing:-.035em;margin:8px 0 10px;color:#2a3139;}.ac-module-status{font:650 8px ui-monospace,monospace;letter-spacing:.07em;color:#70818e;display:flex;align-items:center;gap:5px}.ac-module-status i{width:5px;height:5px;border-radius:50%;background:#47a28b;box-shadow:0 0 0 3px #e5f5ef}.ac-module-icon{color:#76838f;font-size:13px}
+  .ac-browser{height:76px;border:1px solid #d8e0e6;border-radius:5px;overflow:hidden;background:#fff;box-shadow:0 4px 8px #00000008;}.ac-browser-top{height:15px;background:#f2f5f7;display:flex;align-items:center;gap:3px;padding:0 7px;border-bottom:1px solid #e6eaee}.ac-browser-top span{width:3px;height:3px;border-radius:50%;background:#a3acb5}.ac-browser-top b{font-size:6px;font-weight:500;color:#a0a8ae;margin-left:7px}.ac-browser-body{display:flex;padding:8px 7px;gap:7px}.ac-browser-side{width:16px;border-right:1px solid #e8edf0;display:flex;flex-direction:column;gap:5px}.ac-browser-side i{width:9px;height:2px;border-radius:4px;background:#d1d9df}.ac-browser-main{flex:1}.ac-browser-heading{width:78%;height:5px;background:#444e58;border-radius:2px}.ac-browser-line{height:3px;margin-top:6px;background:#d8e0e7;width:93%;border-radius:2px}.ac-browser-line.short{width:61%;margin-top:4px}.ac-browser-actions{display:flex;gap:3px;margin-top:9px}.ac-browser-actions i{width:25px;height:7px;background:#354654;border-radius:2px}.ac-browser-actions i+ i{background:#e9edf1}.ac-browser-visual{width:28%;height:46px;background:linear-gradient(145deg,#d9eaf6,#e8e9f1);border-radius:3px;position:relative;overflow:hidden}.ac-browser-visual span{position:absolute;bottom:-10px;left:9px;width:20px;height:54px;transform:rotate(36deg);background:#fff7;border-radius:20px}.ac-browser-visual span:nth-child(2){left:30px;background:#8ab0cc44}.ac-browser-visual span:nth-child(3){left:48px;background:#fff8}
+  .ac-workflow{height:70px;display:flex;align-items:center;justify-content:center;position:relative}.ac-workflow-node{border:1px solid #c9d4dd;display:grid;place-items:center;flex:none;background:#f3f7fa;box-shadow:0 3px 8px #29405112}.ac-node-a,.ac-node-b{width:28px;height:28px;border-radius:8px}.ac-node-a>span{width:10px;height:10px;border:2px solid #7792a9;border-radius:3px;transform:rotate(45deg)}.ac-node-b>span{height:12px;width:12px;border-radius:50%;border:2px solid #7b98b1;box-shadow:inset 0 0 0 2px white}.ac-node-hub{height:42px;width:42px;border-radius:12px;background:#28333f;color:#fff;border-color:#596777;box-shadow:0 9px 16px #26374623}.ac-node-hub svg{width:21px;height:21px}.ac-workflow-path{height:1px;width:19%;background:linear-gradient(90deg,#cad5de,#7fa3c3);position:relative}.ac-workflow-pulse{position:absolute;left:20%;top:50%;height:5px;width:5px;border-radius:50%;background:#347fc4;box-shadow:0 0 0 3px #d8eaf8;animation:ac-path-pulse 4.5s ease-in-out infinite}.ac-module-foot{margin-top:0}.ac-module-foot span{color:#31866b}
+  .ac-trend{font:650 10px ui-monospace,monospace;color:#31906f}.ac-chart{height:72px;position:relative;overflow:hidden}.ac-chart svg{position:absolute;inset:0;width:100%;height:100%}.ac-chart-lines{position:absolute;inset:0;display:flex;justify-content:space-between;flex-direction:column}.ac-chart-lines span{height:1px;width:100%;background:linear-gradient(90deg,#e8edf1,#d5dfe7 60%,#e8edf1)}.ac-growth-stroke{stroke-dasharray:260;stroke-dashoffset:260;animation:ac-draw 5s ease-in-out infinite alternate}.ac-growth-end{animation:ac-end-dot 5s ease-in-out infinite alternate;transform-origin:218px 6px}.ac-growth-caption{margin-top:5px}.ac-growth-caption b{font-size:11px;color:#347fc4}
+  .ac-brand-display{height:75px;position:relative;display:flex;justify-content:center;align-items:end;gap:14px}.ac-brand-card{width:54px;height:37px;border-radius:3px;background:linear-gradient(145deg,#424a54,#1f262d);box-shadow:4px 6px 9px #15202a24;transform:perspective(250px) rotateY(-15deg) rotateZ(-5deg);display:flex;align-items:center;justify-content:center;position:relative}.ac-brand-card>span{font-size:21px;color:white;font-weight:800;letter-spacing:-.1em}.ac-brand-card>span span{color:#8db7d5}.ac-brand-card i{position:absolute;bottom:5px;left:8px;width:16px;height:2px;background:#929ca6}.ac-brand-bottle{width:28px;height:66px;position:relative;transform:rotate(8deg);filter:drop-shadow(4px 5px 4px #26323d24)}.ac-bottle-lid{position:absolute;top:0;left:7px;width:14px;height:10px;background:#1d252c;border-radius:4px 4px 1px 1px}.ac-bottle-body{position:absolute;top:8px;left:2px;width:24px;height:57px;border-radius:7px 7px 5px 5px;background:linear-gradient(90deg,#1c242b,#555f6a 44%,#1d262e);display:grid;place-items:center}.ac-bottle-body span{font-size:12px;font-weight:800;letter-spacing:-.1em;color:white}.ac-brand-mug{width:43px;height:43px;position:relative;filter:drop-shadow(3px 5px 3px #17222c20)}.ac-mug-body{position:absolute;inset:2px 6px 0 0;background:linear-gradient(110deg,#f0f1f2,#fff 55%,#e3e7eb);border:1px solid #d2d9de;border-radius:2px 2px 9px 9px;z-index:1;display:grid;place-items:center}.ac-mug-body span{font-size:17px;font-weight:800;letter-spacing:-.1em;color:#303741}.ac-mug-handle{position:absolute;right:0;top:9px;width:14px;height:23px;border:5px solid #eaedf0;border-radius:0 9px 9px 0}.ac-system-label{position:absolute;z-index:4;bottom:5.2%;left:50%;transform:translateX(-50%);white-space:nowrap;letter-spacing:.2em;font-size:9px;color:#9aa5ad}.ac-system-label span{color:#347fc4;margin:0 7px}
+  @keyframes ac-fallback-outer{from{transform:translate(-50%,-50%) rotate(-25deg) rotateY(66deg) rotate(0)}to{transform:translate(-50%,-50%) rotate(-25deg) rotateY(66deg) rotate(360deg)}}
+  @keyframes ac-fallback-mid{from{transform:translate(-50%,-50%) rotate(35deg) rotateX(64deg) rotate(0)}to{transform:translate(-50%,-50%) rotate(35deg) rotateX(64deg) rotate(-360deg)}}
+  @keyframes ac-fallback-inner{from{transform:translate(-50%,-50%) rotate(-30deg) rotateY(54deg) rotate(0)}to{transform:translate(-50%,-50%) rotate(-30deg) rotateY(54deg) rotate(360deg)}}
+  @keyframes ac-path-pulse{0%,10%{left:20%;opacity:0}20%{opacity:1}65%{left:78%;opacity:1}80%,100%{left:78%;opacity:0}}
+  @keyframes ac-draw{0%,10%{stroke-dashoffset:260}75%,100%{stroke-dashoffset:0}}
+  @keyframes ac-end-dot{0%,60%{opacity:0;transform:scale(.4)}75%,100%{opacity:1;transform:scale(1)}}
+  @media(max-width:960px){.ac-stage{height:560px}.ac-orbit-area{width:41%}.ac-module{width:26%;height:178px;padding:13px}.ac-web,.ac-growth{left:2.5%}.ac-ai,.ac-brand{right:2.5%}.ac-browser{height:69px}}
+  @media(max-width:640px){.ac-connected{margin-top:14px}.ac-stage{height:570px}.ac-orbit-area{width:67%;top:48%}.ac-architecture{opacity:.4}.ac-module{width:41%;height:137px;border-radius:10px;padding:11px;box-shadow:0 7px 20px #1725340c}.ac-module-title{font-size:12px;margin:7px 0 9px}.ac-module-no,.ac-module-foot,.ac-growth-caption{font-size:6px}.ac-web,.ac-ai{top:3%}.ac-growth,.ac-brand{bottom:3%}.ac-web,.ac-growth{left:3%}.ac-ai,.ac-brand{right:3%}.ac-browser{height:60px}.ac-browser-visual{height:35px}.ac-browser-body{padding:5px}.ac-workflow{height:55px}.ac-node-a,.ac-node-b{width:21px;height:21px;border-radius:6px}.ac-node-hub{width:32px;height:32px}.ac-workflow-path{width:13%}.ac-module-foot{font-size:6px}.ac-chart{height:53px}.ac-brand-display{height:62px;gap:9px;transform:scale(.85);transform-origin:center bottom}.ac-system-label{bottom:0;font-size:6px;letter-spacing:.13em}.ac-stage:before,.ac-stage:after{height:5%}.ac-ambient{opacity:.22}}
+  @media(max-width:390px){.ac-stage{height:535px}.ac-module{height:131px}.ac-orbit-area{width:68%}.ac-brand-display{transform:scale(.75)}.ac-module-no{font-size:5.5px}}
+  @media(prefers-reduced-motion:reduce){.ac-connected *, .ac-connected *::before, .ac-connected *::after{animation:none!important;transition:none!important}.ac-growth-stroke{stroke-dashoffset:0}.ac-growth-end{opacity:1}}
+</style></head><body><div class="preview-heading"><h1>Your existing homepage heading</h1><p>Existing support text stays in your Astro page. This preview uses placeholder copy only.</p><div class="buttons"><span>Your primary CTA</span><span>Your secondary CTA</span></div></div><section class="ac-connected" data-connected-hero aria-label="Attribute Corporate Solutions: connected digital services">
+  <div class="ac-stage">
+    <div class="ac-stage-grid" aria-hidden="true"></div>
+    <div class="ac-ambient ac-ambient-one" aria-hidden="true"></div>
+    <div class="ac-ambient ac-ambient-two" aria-hidden="true"></div>
+    <svg class="ac-architecture" viewBox="0 0 1100 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <g fill="none" stroke="#929ca8" stroke-width="1" opacity=".19">
+        <ellipse cx="550" cy="300" rx="290" ry="195" stroke-dasharray="3 9"/>
+        <ellipse cx="550" cy="300" rx="233" ry="233" stroke-dasharray="2 11"/>
+        <path d="M550 30V570M100 300H1000" stroke-dasharray="2 11"/>
+      </g>
+      <g fill="none" stroke="#657b8b" stroke-width="1.1" opacity=".4">
+        <path d="M390 204L322 164L270 164"/>
+        <path d="M710 204L777 164L832 164"/>
+        <path d="M390 400L323 444L270 444"/>
+        <path d="M710 400L777 444L832 444"/>
+      </g>
+      <g fill="#4085c4">
+        <circle cx="390" cy="204" r="3"/>
+        <circle cx="710" cy="204" r="3"/>
+        <circle cx="390" cy="400" r="3"/>
+        <circle cx="710" cy="400" r="3"/>
+      </g>
+    </svg>
+
+    <div class="ac-orbit-area" aria-hidden="true">
+      <div class="ac-core-halo"></div>
+      <div class="ac-core-fallback">
+        <div class="ac-fallback-ring ac-ring-outer"></div>
+        <div class="ac-fallback-ring ac-ring-middle"></div>
+        <div class="ac-fallback-ring ac-ring-inner"></div>
+      </div>
+      <canvas class="ac-canvas" data-ac-canvas aria-hidden="true"></canvas>
+      <div class="ac-center-mark"><span>A<span class="ac-dot">.</span></span></div>
+      <span class="ac-tick ac-tick-n"></span>
+      <span class="ac-tick ac-tick-s"></span>
+      <span class="ac-tick ac-tick-e"></span>
+      <span class="ac-tick ac-tick-w"></span>
+    </div>
+
+    <div class="ac-module ac-web" data-ac-module="web">
+      <div class="ac-module-top"><span class="ac-module-no">01 / CREATE</span><span class="ac-module-status"><i></i> LIVE</span></div>
+      <div class="ac-module-title">Web &amp; apps</div>
+      <div class="ac-browser">
+        <div class="ac-browser-top"><span></span><span></span><span></span><b>attribute / studio</b></div>
+        <div class="ac-browser-body">
+          <div class="ac-browser-side"><i></i><i></i><i></i></div>
+          <div class="ac-browser-main"><div class="ac-browser-heading"></div><div class="ac-browser-line"></div><div class="ac-browser-line short"></div><div class="ac-browser-actions"><i></i><i></i></div></div>
+          <div class="ac-browser-visual"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ac-module ac-ai" data-ac-module="ai">
+      <div class="ac-module-top"><span class="ac-module-no">02 / INTELLIGENCE</span><span class="ac-module-icon">✳</span></div>
+      <div class="ac-module-title">AI &amp; automation</div>
+      <div class="ac-workflow" aria-hidden="true">
+        <span class="ac-workflow-node ac-node-a"><span></span></span>
+        <span class="ac-workflow-path ac-path-a"></span>
+        <span class="ac-workflow-node ac-node-hub"><svg viewBox="0 0 24 24"><path d="M12 2.5L14.3 9.7L21.5 12L14.3 14.3L12 21.5L9.7 14.3L2.5 12L9.7 9.7Z" fill="currentColor"/></svg></span>
+        <span class="ac-workflow-path ac-path-b"></span>
+        <span class="ac-workflow-node ac-node-b"><span></span></span>
+        <span class="ac-workflow-pulse"></span>
+      </div>
+      <div class="ac-module-foot">CONNECTED SYSTEMS <span>ACTIVE</span></div>
+    </div>
+
+    <div class="ac-module ac-growth" data-ac-module="growth">
+      <div class="ac-module-top"><span class="ac-module-no">03 / MOMENTUM</span><span class="ac-trend">↗ +24.8%</span></div>
+      <div class="ac-module-title">Digital growth</div>
+      <div class="ac-chart">
+        <div class="ac-chart-lines"><span></span><span></span><span></span></div>
+        <svg viewBox="0 0 220 76" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="acGrowthFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#347fc4" stop-opacity=".17"/><stop offset="1" stop-color="#347fc4" stop-opacity="0"/></linearGradient></defs><path d="M2 68C23 65 31 53 49 58S76 47 94 51S120 29 143 38S179 18 218 6V76H2Z" fill="url(#acGrowthFill)"/><path class="ac-growth-stroke" d="M2 68C23 65 31 53 49 58S76 47 94 51S120 29 143 38S179 18 218 6" fill="none" stroke="#347fc4" stroke-width="2.3" stroke-linecap="round"/><circle class="ac-growth-end" cx="218" cy="6" r="4" fill="#347fc4" stroke="#fff" stroke-width="2"/></svg>
+      </div>
+      <div class="ac-growth-caption"><span>REACH</span><b>↗</b><span>ENGAGEMENT</span></div>
+    </div>
+
+    <div class="ac-module ac-brand" data-ac-module="brand">
+      <div class="ac-module-top"><span class="ac-module-no">04 / IDENTITY</span><span class="ac-module-icon">◆</span></div>
+      <div class="ac-module-title">Brand experiences</div>
+      <div class="ac-brand-display" aria-hidden="true">
+        <div class="ac-brand-card"><span>A<span>.</span></span><i></i></div>
+        <div class="ac-brand-bottle"><div class="ac-bottle-lid"></div><div class="ac-bottle-body"><span>A.</span></div></div>
+        <div class="ac-brand-mug"><div class="ac-mug-body"><span>A.</span></div><div class="ac-mug-handle"></div></div>
+      </div>
+    </div>
+
+    <span class="ac-system-label" aria-hidden="true">ONE CONNECTED SYSTEM <span>·</span> INFINITE POSSIBILITIES</span>
+  </div>
+</section>
+
+
+
+</body></html>
