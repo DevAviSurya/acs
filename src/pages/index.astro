@@ -13,6 +13,7 @@ import { serviceCategories } from '../data/services';
 import ContinuousJourney from '../components/ContinuousJourney.astro';
 import PremiumJourney from '../components/PremiumJourney.astro';
 import ConnectedHero from '../components/ConnectedHero.astro';
+import ConnectedHeroHover from '../components/ConnectedHero-hover.astro';
 ---
 
 <BaseLayout>
@@ -22,7 +23,8 @@ import ConnectedHero from '../components/ConnectedHero.astro';
     /> -->
 	<!-- <AttributeHeor /> -->
 	 <!-- <PremiumJourney /> -->
-	  <ConnectedHero />
+	  <!-- <ConnectedHero /> -->
+	  <ConnectedHeroHover />
 	<Intro />
 
 	{serviceCategories.map((category, index) => (
