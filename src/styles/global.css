@@ -1,4 +1,13 @@
 @import "tailwindcss";
+@import "@fontsource-variable/rethink-sans";
+
+:root {
+	--font-rethink-sans: "Rethink Sans Variable";
+}
+
+html {
+	font-family: var(--font-rethink-sans), "Rethink Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
 
 @theme {
 	/* Brand palette — white and charcoal black, and shades of those two,
@@ -53,7 +62,6 @@
   justify-content: center;
   text-align: center;
   color: #ffffff;
-  font-family: system-ui, -apple-system, sans-serif;
 }
 
 .hero-video {
