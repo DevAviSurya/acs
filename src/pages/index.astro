@@ -1,37 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/home/Hero.astro';
-import HeroVideo from '../components/HeroVideo.astro';
-import HeroSplit from '../components/HeroSplit.astro';
-import AttributeHeor from '../components/AttributeHero.astro';
 import Intro from '../components/home/Intro.astro';
+import Industries from '../components/home/Industries.astro';
 import ServiceCategory from '../components/home/ServiceCategory.astro';
 import FeaturedProjects from '../components/home/FeaturedProjects.astro';
+import ProcessSteps from '../components/home/ProcessSteps.astro';
 import WhyChooseAttribute from '../components/home/WhyChooseAttribute.astro';
 import ContactCta from '../components/home/ContactCta.astro';
 import { serviceCategories } from '../data/services';
-import ContinuousJourney from '../components/ContinuousJourney.astro';
-import PremiumJourney from '../components/PremiumJourney.astro';
-import ConnectedHero from '../components/ConnectedHero.astro';
 import ConnectedHeroHover from '../components/ConnectedHero-hover.astro';
 ---
 
 <BaseLayout>
-	<!-- <HeroSplit
-      headline="Built in code. Scaled with AI. Worn in real life."
-      secondaryCtaHref="/work"
-    /> -->
-	<!-- <AttributeHeor /> -->
-	 <!-- <PremiumJourney /> -->
-	  <!-- <ConnectedHero /> -->
-	  <ConnectedHeroHover />
+	<ConnectedHeroHover />
 	<Intro />
+	<Industries />
 
 	{serviceCategories.map((category, index) => (
 		<ServiceCategory category={category} tint={index % 2 === 0 ? 'base' : 'surface'} />
 	))}
 
 	<FeaturedProjects />
+	<ProcessSteps />
 	<WhyChooseAttribute />
 	<ContactCta />
 </BaseLayout>

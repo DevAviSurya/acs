@@ -27,7 +27,7 @@ export interface ServiceCategory {
 export const serviceCategories: ServiceCategory[] = [
 	{
 		id: 'technology',
-		label: 'Technology Solutions',
+		label: 'WEB & SOFTWARE',
 		title: 'Software and IT built for how you operate',
 		description:
 			'From custom applications to day-to-day infrastructure support, we build and maintain the technology your business runs on.',
@@ -50,7 +50,7 @@ export const serviceCategories: ServiceCategory[] = [
 	},
 	{
 		id: 'creative',
-		label: 'Creative & Brand Solutions',
+		label: 'BRAND & MERCHANDISE',
 		title: 'Branded merchandise and design that represent you well',
 		description:
 			'We help you look the part everywhere your brand shows up — from promotional merchandise to the visual identity behind it.',
@@ -73,7 +73,7 @@ export const serviceCategories: ServiceCategory[] = [
 	},
 	{
 		id: 'print-packaging',
-		label: 'Print & Packaging Solutions',
+		label: 'SOCIAL MEDIA & PRINT',
 		title: 'Print and packaging finished to a premium standard',
 		description:
 			'High-quality production for everything from business collateral to retail-ready packaging — on time and to spec.',

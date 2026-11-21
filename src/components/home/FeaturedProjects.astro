@@ -9,18 +9,21 @@ const projects = [
 		icon: serviceCategories[0].services[0].icon,
 		title: 'Internal operations platform',
 		description: 'A custom web application replacing spreadsheets for scheduling, inventory, and reporting.',
+		tags: ['Software Development', 'IT Support'],
 	},
 	{
 		category: serviceCategories[1],
 		icon: serviceCategories[1].services[0].icon,
 		title: 'Brand refresh & merchandise rollout',
 		description: 'New visual identity carried through onboarding kits, apparel, and event merchandise.',
+		tags: ['Graphic Design', 'Corporate Merchandise'],
 	},
 	{
 		category: serviceCategories[2],
 		icon: serviceCategories[2].services[0].icon,
 		title: 'Retail packaging redesign',
 		description: 'Structural and print redesign for a shelf-ready product line, from concept to production.',
+		tags: ['Packaging Solutions', 'Printing Services'],
 	},
 ];
 ---
@@ -39,17 +42,24 @@ const projects = [
 
 		<div class="mt-12 grid gap-6 sm:grid-cols-3">
 			{projects.map((project) => (
-				<article class="overflow-hidden rounded-2xl border border-brand-border/70 bg-brand-surface">
-					<div class="relative flex h-20 items-center justify-center ">
+				<article class="group overflow-hidden rounded-2xl border border-brand-border/70 bg-brand-surface transition-colors hover:border-brand-accent/50">
+					<div class="relative flex h-32 items-center justify-center bg-brand-accent/[0.04]">
 						<span class="absolute left-4 top-4 rounded-full bg-brand-bg/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-brand-foreground">
 							Sample
 						</span>
-						<project.icon class="h-10 w-10 text-white/70" aria-hidden="true" stroke-width={1.5} />
+						<project.icon class="h-10 w-10 text-brand-accent/60" aria-hidden="true" stroke-width={1.5} />
 					</div>
 					<div class="p-6">
 						<p class="text-xs font-semibold uppercase tracking-wider text-brand-accent">{project.category.label}</p>
 						<h3 class="mt-2 text-lg font-semibold text-brand-foreground">{project.title}</h3>
 						<p class="mt-2 text-sm leading-relaxed text-brand-muted">{project.description}</p>
+						<ul class="mt-5 flex flex-wrap gap-2">
+							{project.tags.map((tag) => (
+								<li class="rounded-full border border-brand-border/70 px-2.5 py-1 text-[11px] font-medium text-brand-muted">
+									{tag}
+								</li>
+							))}
+						</ul>
 					</div>
 				</article>
 			))}

@@ -3,6 +3,8 @@ import Users from '@lucide/astro/icons/users';
 import Zap from '@lucide/astro/icons/zap';
 import ShieldCheck from '@lucide/astro/icons/shield-check';
 import MapPin from '@lucide/astro/icons/map-pin';
+import Check from '@lucide/astro/icons/check';
+import X from '@lucide/astro/icons/x';
 
 const reasons = [
 	{
@@ -26,6 +28,13 @@ const reasons = [
 		description: 'A team you can reach directly, with ongoing support after the project ships.',
 	},
 ];
+
+const comparison = [
+	{ row: 'Point of contact', vendors: 'A different one for each discipline', attribute: 'One team, start to finish' },
+	{ row: 'Timelines', vendors: 'Coordinated manually, across calendars', attribute: 'Managed under a single plan' },
+	{ row: 'Quality & brand consistency', vendors: 'Varies by vendor', attribute: 'Held to one standard throughout' },
+	{ row: 'Procurement overhead', vendors: 'Separate contracts & invoices', attribute: 'One relationship to manage' },
+];
 ---
 
 <section class="bg-brand-surface py-20 sm:py-28" data-animate>
@@ -45,6 +54,27 @@ const reasons = [
 					</div>
 					<h3 class="mt-5 text-base font-semibold text-brand-foreground">{reason.title}</h3>
 					<p class="mt-2 text-sm leading-relaxed text-brand-muted">{reason.description}</p>
+				</div>
+			))}
+		</div>
+
+		<div class="mt-16 overflow-hidden rounded-2xl border border-brand-border/70 bg-brand-bg">
+			<div class="grid grid-cols-[1.3fr_1fr_1fr] border-b border-brand-border/70 bg-brand-surface text-xs font-semibold uppercase tracking-wider text-brand-muted">
+				<div class="px-5 py-4 sm:px-6">Working with</div>
+				<div class="px-5 py-4 sm:px-6">Multiple vendors</div>
+				<div class="px-5 py-4 text-brand-foreground sm:px-6">Attribute</div>
+			</div>
+			{comparison.map((item) => (
+				<div class="grid grid-cols-[1.3fr_1fr_1fr] border-b border-brand-border/50 text-sm last:border-b-0">
+					<div class="px-5 py-4 font-medium text-brand-foreground sm:px-6">{item.row}</div>
+					<div class="flex items-start gap-2 px-5 py-4 text-brand-muted sm:px-6">
+						<X class="mt-0.5 h-4 w-4 shrink-0 text-brand-muted/70" aria-hidden="true" stroke-width={2} />
+						<span>{item.vendors}</span>
+					</div>
+					<div class="flex items-start gap-2 px-5 py-4 text-brand-foreground sm:px-6">
+						<Check class="mt-0.5 h-4 w-4 shrink-0 text-brand-accent" aria-hidden="true" stroke-width={2} />
+						<span>{item.attribute}</span>
+					</div>
 				</div>
 			))}
 		</div>

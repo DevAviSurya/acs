@@ -19,16 +19,18 @@ import { siteConfig } from '../../config/site';
 			<div class="flex w-full flex-col gap-3 sm:w-auto">
 				<a
 					href="/contact"
-					class="rounded-full bg-brand-bg px-6 py-3 text-center text-sm font-semibold text-brand-foreground transition-opacity hover:opacity-90"
+					class="inline-flex items-center justify-center gap-2 rounded-full bg-brand-bg px-6 py-3 text-center text-sm font-semibold text-brand-foreground transition-opacity hover:opacity-90"
 				>
 					Request a Quote
+					<span aria-hidden="true">↗</span>
 				</a>
-				<a
-					href={`mailto:${siteConfig.contact.email}`}
-					class="rounded-full border border-white/25 px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:border-white/50 hover:bg-white/5"
+				<button
+					type="button"
+					data-copy-email={siteConfig.contact.email}
+					class="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:border-white/50 hover:bg-white/5"
 				>
-					Email Us
-				</a>
+					<span data-copy-label>{siteConfig.contact.email}</span>
+				</button>
 				<a
 					href={`tel:${siteConfig.contact.phone}`}
 					class="text-center text-sm font-medium text-white/60 transition-colors hover:text-white"
@@ -39,3 +41,25 @@ import { siteConfig } from '../../config/site';
 		</div>
 	</div>
 </section>
+
+<script>
+	for (const button of document.querySelectorAll<HTMLButtonElement>('[data-copy-email]')) {
+		const label = button.querySelector('[data-copy-label]');
+		const email = button.dataset.copyEmail;
+		const defaultText = label?.textContent ?? '';
+		if (!email || !label) continue;
+
+		button.addEventListener('click', async () => {
+			try {
+				await navigator.clipboard.writeText(email);
+				label.textContent = 'Email copied';
+			} catch {
+				window.location.href = `mailto:${email}`;
+				return;
+			}
+			setTimeout(() => {
+				label.textContent = defaultText;
+			}, 2000);
+		});
+	}
+</script>

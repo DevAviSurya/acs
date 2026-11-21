@@ -3,8 +3,11 @@ import { siteConfig } from '../config/site';
 import { mainNav } from '../data/navigation';
 ---
 
-<header class="sticky top-0 z-50 w-full border-b border-brand-border/60 bg-brand-bg/80 backdrop-blur-md">
-	<div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
+<div data-header-sentinel aria-hidden="true" class="pointer-events-none absolute top-0 left-0 h-2 w-px"></div>
+<header
+	class="group sticky top-0 z-50 w-full border-b border-transparent bg-brand-bg/60 backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-300 ease-out motion-reduce:transition-none data-[scrolled]:border-brand-border/60 data-[scrolled]:bg-brand-bg/80 data-[scrolled]:shadow-[0_1px_0_rgba(32,30,27,0.04)] data-[open]:border-brand-border/60 data-[open]:bg-brand-bg"
+>
+	<div class="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
 		<a href="/" class="flex flex-col leading-tight" aria-label={`${siteConfig.name} — home`}>
 			<span class="text-lg font-semibold tracking-tight text-brand-foreground">{siteConfig.shortName}</span>
 			<span class="text-[10px] uppercase tracking-[0.2em] text-brand-muted">Corporate Solutions</span>
@@ -21,9 +24,10 @@ import { mainNav } from '../data/navigation';
 			))}
 			<a
 				href="/contact"
-				class="rounded-full bg-brand-accent px-5 py-2 text-sm font-semibold text-brand-accent-foreground transition-opacity hover:opacity-90"
+				class="inline-flex items-center gap-1.5 rounded-full bg-brand-accent px-5 py-2 text-sm font-semibold text-brand-accent-foreground transition-opacity hover:opacity-90"
 			>
 				Request a Quote
+				<span aria-hidden="true">↗</span>
 			</a>
 		</nav>
 
@@ -44,7 +48,11 @@ import { mainNav } from '../data/navigation';
 		</button>
 	</div>
 
-	<nav id="mobile-nav" aria-label="Mobile" class="hidden border-t border-brand-border/60 bg-brand-bg lg:hidden">
+	<nav
+		id="mobile-nav"
+		aria-label="Mobile"
+		class="invisible pointer-events-none absolute inset-x-0 top-full -translate-y-2 border-t border-brand-border/60 bg-brand-bg opacity-0 transition-[opacity,transform,visibility] duration-200 ease-out motion-reduce:transition-none group-data-[open]:visible group-data-[open]:translate-y-0 group-data-[open]:pointer-events-auto group-data-[open]:opacity-100 lg:hidden"
+	>
 		<div class="flex flex-col gap-1 px-6 py-4">
 			{mainNav.map((item) => (
 				<a
@@ -56,25 +64,53 @@ import { mainNav } from '../data/navigation';
 			))}
 			<a
 				href="/contact"
-				class="mt-2 rounded-full bg-brand-accent px-5 py-2 text-center text-sm font-semibold text-brand-accent-foreground"
+				class="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-brand-accent px-5 py-2 text-center text-sm font-semibold text-brand-accent-foreground"
 			>
 				Request a Quote
+				<span aria-hidden="true">↗</span>
 			</a>
 		</div>
 	</nav>
 </header>
 
 <script>
+	const header = document.querySelector('header');
+	const sentinel = document.querySelector('[data-header-sentinel]');
 	const toggle = document.getElementById('nav-toggle');
 	const mobileNav = document.getElementById('mobile-nav');
 	const iconOpen = document.getElementById('icon-open');
 	const iconClose = document.getElementById('icon-close');
 
+	if (sentinel && header) {
+		new IntersectionObserver(([entry]) => {
+			header.toggleAttribute('data-scrolled', !entry.isIntersecting);
+		}).observe(sentinel);
+	}
+
+	const setOpen = (open: boolean) => {
+		header?.toggleAttribute('data-open', open);
+		toggle?.setAttribute('aria-expanded', String(open));
+		iconOpen?.classList.toggle('hidden', open);
+		iconClose?.classList.toggle('hidden', !open);
+	};
+
 	toggle?.addEventListener('click', () => {
-		const expanded = toggle.getAttribute('aria-expanded') === 'true';
-		toggle.setAttribute('aria-expanded', String(!expanded));
-		mobileNav?.classList.toggle('hidden', expanded);
-		iconOpen?.classList.toggle('hidden', !expanded);
-		iconClose?.classList.toggle('hidden', expanded);
+		setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+	});
+
+	mobileNav?.addEventListener('click', (event) => {
+		if ((event.target as HTMLElement).closest('a')) setOpen(false);
+	});
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+			setOpen(false);
+			toggle.focus();
+		}
+	});
+
+	const desktop = window.matchMedia('(min-width: 1024px)');
+	desktop.addEventListener('change', (event) => {
+		if (event.matches) setOpen(false);
 	});
 </script>

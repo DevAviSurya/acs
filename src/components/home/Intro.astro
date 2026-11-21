@@ -1,8 +1,10 @@
 ---
-const credentials = [
-	{ label: 'One partner', detail: 'Six disciplines handled under a single point of contact.' },
-	{ label: 'In-house production', detail: 'Design, development, and print production kept under one roof.' },
-	{ label: 'Built for business', detail: 'Processes shaped around deadlines, approvals, and procurement.' },
+import { serviceCategories, allServices } from '../../data/services';
+
+const stats = [
+	{ value: String(allServices.length), label: 'Disciplines under one roof' },
+	{ value: String(serviceCategories.length), label: 'Connected solution groups' },
+	{ value: '1', label: 'Point of contact, start to finish' },
 ];
 ---
 
@@ -21,10 +23,10 @@ const credentials = [
 		</div>
 
 		<dl class="mt-14 grid gap-10 border-t border-brand-border/70 pt-10 sm:grid-cols-3">
-			{credentials.map((item) => (
+			{stats.map((stat) => (
 				<div>
-					<dt class="text-base font-semibold text-brand-foreground">{item.label}</dt>
-					<dd class="mt-2 text-sm leading-relaxed text-brand-muted">{item.detail}</dd>
+					<dt class="text-5xl font-semibold tracking-tight text-brand-foreground sm:text-6xl">{stat.value}</dt>
+					<dd class="mt-2 text-sm leading-relaxed text-brand-muted">{stat.label}</dd>
 				</div>
 			))}
 		</dl>
