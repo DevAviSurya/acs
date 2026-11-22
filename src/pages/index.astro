@@ -2,12 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Intro from '../components/home/Intro.astro';
 import Industries from '../components/home/Industries.astro';
-import ServiceCategory from '../components/home/ServiceCategory.astro';
+import ServicesGrid from '../components/home/ServicesGrid.astro';
 import FeaturedProjects from '../components/home/FeaturedProjects.astro';
 import ProcessSteps from '../components/home/ProcessSteps.astro';
 import WhyChooseAttribute from '../components/home/WhyChooseAttribute.astro';
 import ContactCta from '../components/home/ContactCta.astro';
-import { serviceCategories } from '../data/services';
 import ConnectedHeroHover from '../components/ConnectedHero-hover.astro';
 ---
 
@@ -15,11 +14,7 @@ import ConnectedHeroHover from '../components/ConnectedHero-hover.astro';
 	<ConnectedHeroHover />
 	<Intro />
 	<Industries />
-
-	{serviceCategories.map((category, index) => (
-		<ServiceCategory category={category} tint={index % 2 === 0 ? 'base' : 'surface'} />
-	))}
-
+	<ServicesGrid />
 	<FeaturedProjects />
 	<ProcessSteps />
 	<WhyChooseAttribute />

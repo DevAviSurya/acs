@@ -17,8 +17,8 @@ html {
 	--color-brand-bg: #FFF;
 	--color-brand-surface: #f5f5f7;
 	--color-brand-border: #d6d6d6;
-	--color-brand-foreground: #201e1b;
-	--color-brand-muted: #68655f;
+	--color-brand-foreground: #000;
+	--color-brand-muted: #595959;
 	--color-brand-accent: #201e1b;
 	--color-brand-accent-foreground: #eae8e4;
 }

@@ -1,0 +1,2538 @@
+---
+import { allServices } from '../../data/services';
+import { siteConfig } from '../../config/site';
+
+const websiteService = allServices.find((service) => service.slug === 'website');
+const websiteCodeLines = websiteService
+	? [
+			'const Services = {',
+			`  name: "${websiteService.title}",`,
+			`  summary: "${websiteService.summary}",`,
+			'  features: [',
+			...websiteService.points.map((point) => `    "${point}",`),
+			'  ],',
+			'};',
+		]
+	: [];
+
+const aiService = allServices.find((service) => service.slug === 'ai-integration');
+const aiQaPairs = [
+	{ question: 'What is AI integration?', answer: aiService?.summary ?? '' },
+	{
+		question: 'What is AEO?',
+		answer: 'Answer Engine Optimization — getting your content surfaced in AI answers like ChatGPT, not just search results.',
+	},
+	{
+		question: 'What services do you offer?',
+		answer: `${allServices.map((service) => service.title).join(', ')}.`,
+	},
+];
+
+const siteDomain = siteConfig.url.replace(/^https?:\/\//, '');
+const merchService = allServices.find((service) => service.slug === 'corporate-merchandising');
+const marketingService = allServices.find((service) => service.slug === 'digital-marketing');
+
+const seoQueries = [
+	{
+		query: 'custom website design company',
+		service: websiteService,
+		overview: `Attribute Corporate Solutions — ${websiteService?.summary ?? ''}`,
+	},
+	{
+		query: 'corporate merchandise supplier',
+		service: merchService,
+		overview: `Attribute Corporate Solutions — ${merchService?.summary ?? ''}`,
+	},
+	{
+		query: 'digital marketing agency for small business',
+		service: marketingService,
+		overview: `Attribute Corporate Solutions — ${marketingService?.summary ?? ''}`,
+	},
+].map(({ query, service, overview }) => ({
+	query,
+	overview,
+	title: `Attribute Corporate Solutions — ${service?.title ?? ''}`,
+	snippet: service?.summary ?? '',
+}));
+
+// Illustrative campaign stats — like FeaturedProjects' placeholder work,
+// kept clearly in-house marketing copy rather than real client numbers.
+const adCampaigns = [
+	{
+		name: 'Social Awareness Campaign',
+		stats: [
+			{ label: 'Impressions', value: 128400, change: '+18%' },
+			{ label: 'Clicks', value: 3210, change: '+9%' },
+			{ label: 'CTR', value: 2.5, suffix: '%', change: '+4%' },
+			{ label: 'Conversions', value: 184, change: '+22%' },
+		],
+	},
+	{
+		name: 'Search & Display Campaign',
+		stats: [
+			{ label: 'Impressions', value: 96750, change: '+11%' },
+			{ label: 'Clicks', value: 4980, change: '+15%' },
+			{ label: 'CTR', value: 5.1, suffix: '%', change: '+6%' },
+			{ label: 'Conversions', value: 312, change: '+27%' },
+		],
+	},
+	{
+		name: 'Email + Retargeting',
+		stats: [
+			{ label: 'Impressions', value: 54200, change: '+7%' },
+			{ label: 'Clicks', value: 2340, change: '+12%' },
+			{ label: 'CTR', value: 4.3, suffix: '%', change: '+5%' },
+			{ label: 'Conversions', value: 201, change: '+19%' },
+		],
+	},
+];
+
+// Two palette directions the "design canvas" cycles through while hovered.
+const brandPalettes = [
+	{ name: 'Warm identity', colors: ['#201e1b', '#d97757', '#f2c87b', '#f5f5f2'] },
+	{ name: 'Cool identity', colors: ['#1f2937', '#3b55d9', '#7dd3c0', '#f3f4f6'] },
+];
+
+const servicePanels: Record<string, 'website' | 'ai' | 'seo' | 'marketing' | 'design' | 'merch'> = {
+	website: 'website',
+	'ai-integration': 'ai',
+	'seo-aeo': 'seo',
+	'digital-marketing': 'marketing',
+	'graphic-design-printing': 'design',
+	'corporate-merchandising': 'merch',
+};
+---
+
+<section id="services" class="bg-brand-bg py-20 sm:py-28" data-animate>
+	<div class="mx-auto max-w-7xl px-6 lg:px-8">
+		<div class="max-w-2xl">
+			<p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">What we do</p>
+			<h2 class="mt-3 text-3xl font-semibold tracking-tight text-brand-foreground sm:text-4xl">
+				Six services, one accountable partner
+			</h2>
+			<p class="mt-4 text-base leading-relaxed text-brand-muted">
+				From the website and AI tools you run on to the marketing, design, and merchandise your customers
+				see — we cover it end to end, so you're not managing six different vendors.
+			</p>
+		</div>
+
+		<div class="service-grid mt-12 overflow-hidden rounded-2xl border border-brand-border">
+			{allServices.map((service) => (
+				<a
+					href="/contact"
+					class="service-cell group"
+					data-service-panel={servicePanels[service.slug]}
+				>
+					<span class="service-tag">{service.tag}</span>
+					<span class="service-arrow" aria-hidden="true"></span>
+					<span class="service-title">{service.title}</span>
+					<span class="service-blurb">{service.blurb}</span>
+
+					{service.slug === 'website' && (
+						<div class="service-code" aria-hidden="true">
+							<div class="service-code-bar">
+								<span class="service-code-dot"></span>
+								<span class="service-code-dot"></span>
+								<span class="service-code-dot"></span>
+								<span class="service-code-filename">website.ts</span>
+							</div>
+							<div class="service-code-body">
+								{websiteCodeLines.map((line, index) => (
+									<div class="service-code-line">
+										<span class="service-code-ln">{index + 1}</span>
+										<span class="service-code-text" data-full={line}></span>
+									</div>
+								))}
+								<span class="service-code-cursor"></span>
+							</div>
+						</div>
+					)}
+
+					{service.slug === 'ai-integration' && (
+						<div class="service-code service-code--chat" aria-hidden="true" data-qa={JSON.stringify(aiQaPairs)}>
+							<div class="service-chat-bar">
+								<span class="service-chat-badge">AI</span>
+								<span class="service-chat-title">AI Assistant</span>
+							</div>
+							<div class="service-chat-body" data-chat-log></div>
+							<div class="service-chat-composer">
+								<span class="service-chat-composer-field" data-composer-field></span>
+								<span class="service-chat-composer-send" data-composer-send>↑</span>
+							</div>
+						</div>
+					)}
+
+					{service.slug === 'seo-aeo' && (
+						<div class="service-code service-code--search" aria-hidden="true" data-queries={JSON.stringify(seoQueries)} data-domain={siteDomain}>
+							<div class="service-search-bar">
+								<span class="service-search-dot"></span>
+								<span class="service-search-dot"></span>
+								<span class="service-search-dot"></span>
+								<span class="service-search-title">Search</span>
+							</div>
+							<div class="service-search-box">
+								<svg class="service-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<circle cx="11" cy="11" r="7"></circle>
+									<path d="m21 21-4.3-4.3"></path>
+								</svg>
+								<span class="service-search-field" data-search-field></span>
+							</div>
+							<div class="service-search-results" data-search-results></div>
+						</div>
+					)}
+
+					{service.slug === 'digital-marketing' && (
+						<div class="service-code service-code--dash" aria-hidden="true" data-campaigns={JSON.stringify(adCampaigns)}>
+							<div class="service-dash-bar">
+								<span class="service-dash-dot"></span>
+								<span class="service-dash-dot"></span>
+								<span class="service-dash-dot"></span>
+								<span class="service-dash-title">Campaign Manager</span>
+							</div>
+							<div class="service-dash-body" data-dash-body></div>
+						</div>
+					)}
+
+					{service.slug === 'graphic-design-printing' && (
+						<div class="service-code service-code--design" aria-hidden="true" data-palettes={JSON.stringify(brandPalettes)}>
+							<div class="service-design-bar">
+								<span class="service-design-dot"></span>
+								<span class="service-design-dot"></span>
+								<span class="service-design-dot"></span>
+								<span class="service-design-title">Brand Design</span>
+							</div>
+							<div class="service-design-toolbar" data-design-toolbar>
+								<span class="service-design-tool" data-tool>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l8 18 2-7 7-2z"></path></svg>
+								</span>
+								<span class="service-design-tool" data-tool>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="16" y2="8"></line><circle cx="18" cy="6" r="2"></circle></svg>
+								</span>
+								<span class="service-design-tool" data-tool>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect></svg>
+								</span>
+								<span class="service-design-tool" data-tool>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="6" x2="19" y2="6"></line><line x1="12" y1="6" x2="12" y2="18"></line></svg>
+								</span>
+							</div>
+							<div class="service-design-canvas">
+								<div class="service-design-mark" data-design-mark>
+									<span class="service-design-mark-shape service-design-mark-a"></span>
+									<span class="service-design-mark-shape service-design-mark-b"></span>
+								</div>
+								<div class="service-design-swatches" data-design-swatches></div>
+								<div class="service-design-label" data-design-label></div>
+							</div>
+						</div>
+					)}
+
+					{service.slug === 'corporate-merchandising' && (
+						<div class="service-code service-code--merch" aria-hidden="true">
+							<div class="service-merch-bar">
+								<span class="service-merch-dot"></span>
+								<span class="service-merch-dot"></span>
+								<span class="service-merch-dot"></span>
+								<span class="service-merch-title">Product Catalog</span>
+							</div>
+							<div class="service-merch-canvas">
+								<div class="service-merch-item service-merch-item--mug">
+									<span class="service-merch-sparkle service-merch-sparkle-a"></span>
+									<span class="service-merch-float service-merch-float--mug">
+										<span class="service-merch-steam service-merch-steam-a"></span>
+										<span class="service-merch-steam service-merch-steam-b"></span>
+										<span class="service-merch-steam service-merch-steam-c"></span>
+										<canvas class="service-merch-icon-canvas" data-merch-icon="mug"></canvas>
+									</span>
+									<span class="service-merch-label">Mug</span>
+								</div>
+								<div class="service-merch-item service-merch-item--bottle">
+									<span class="service-merch-sparkle service-merch-sparkle-b"></span>
+									<span class="service-merch-float service-merch-float--bottle">
+										<canvas class="service-merch-icon-canvas" data-merch-icon="bottle"></canvas>
+									</span>
+									<span class="service-merch-label">Bottle</span>
+								</div>
+								<div class="service-merch-item service-merch-item--shirt">
+									<span class="service-merch-sparkle service-merch-sparkle-c"></span>
+									<span class="service-merch-float service-merch-float--shirt">
+										<canvas class="service-merch-icon-canvas" data-merch-icon="shirt"></canvas>
+									</span>
+									<span class="service-merch-label">Tee</span>
+								</div>
+							</div>
+						</div>
+					)}
+				</a>
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.service-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		background-color: var(--color-brand-surface);
+	}
+
+	@media (min-width: 640px) {
+		.service-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.service-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	.service-cell {
+		position: relative;
+		display: flex;
+		min-height: 220px;
+		flex-direction: column;
+		justify-content: flex-end;
+		gap: 0.5rem;
+		padding: 2rem 2rem 2.125rem;
+		/* Every cell draws its own full border, pulled over its top/left
+		   neighbour by 1px, so adjacent borders overlap into single lines. */
+		border: 1px solid var(--color-brand-border);
+		margin: -1px 0 0 -1px;
+		transition: background-color 0.3s ease;
+	}
+
+	.service-cell:hover {
+		background-color: var(--color-brand-bg);
+	}
+
+	.service-tag {
+		position: absolute;
+		top: 1.75rem;
+		left: 2rem;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-brand-muted);
+	}
+
+	.service-arrow {
+		position: absolute;
+		top: 1.375rem;
+		right: 1.375rem;
+		width: 2.375rem;
+		height: 2.375rem;
+		border-radius: 50%;
+		border: 1px solid var(--color-brand-border);
+		transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease, border-color 0.3s ease;
+	}
+
+	.service-arrow::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		margin: auto;
+		width: 9px;
+		height: 9px;
+		border-top: 1.6px solid var(--color-brand-foreground);
+		border-right: 1.6px solid var(--color-brand-foreground);
+		transform: translate(-1px, 1px);
+		transition: border-color 0.3s ease;
+	}
+
+	.service-cell:hover .service-arrow {
+		background-color: var(--color-brand-accent);
+		border-color: var(--color-brand-accent);
+		transform: rotate(45deg);
+	}
+
+	.service-cell:hover .service-arrow::before {
+		border-color: var(--color-brand-accent-foreground);
+	}
+
+	.service-title {
+		font-size: clamp(1.125rem, 1.4vw, 1.375rem);
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		line-height: 1.2;
+		color: var(--color-brand-foreground);
+	}
+
+	.service-blurb {
+		font-size: 0.875rem;
+		line-height: 1.5;
+		color: var(--color-brand-muted);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-arrow,
+		.service-arrow::before {
+			transition: none;
+		}
+	}
+
+	.service-code {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 5;
+		display: flex;
+		flex-direction: column;
+		background: #0b0b0c;
+		opacity: 0;
+		pointer-events: none;
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+		/* Grows past the Website cell's own bounds on hover (see below) and
+		   overlays the neighbouring cells on top, instead of resizing the
+		   grid track and pushing them aside. */
+		transition:
+			width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+			height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 0.3s ease,
+			box-shadow 0.45s ease;
+	}
+
+	.service-cell:hover .service-code,
+	.service-cell:focus-visible .service-code {
+		opacity: 1;
+		/* Absorb pointer events while visible so hovering the enlarged
+		   preview can't click through to the tiles it's covering — the
+		   click handler in the script below also cancels any navigation. */
+		pointer-events: auto;
+		box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45);
+	}
+
+	/* Desktop (3 columns x 2 rows): row 1 is Website / AI / SEO & AEO, row 2
+	   is Digital Marketing / Graphic Design & Printing / Merchandising.
+	   Row-1 panels have room below them and grow down; row-2 panels have
+	   no row below, so they anchor from the bottom and grow up instead.
+	   Column-wise, the last column (SEO & AEO, Merchandising) has no room
+	   to its right, so those two anchor from the right and grow left —
+	   Merchandising needs both flips at once, being last row AND column. */
+	@media (min-width: 1024px) {
+		.service-cell[data-service-panel="seo"] .service-code,
+		.service-cell[data-service-panel="merch"] .service-code {
+			left: auto;
+			right: 0;
+		}
+
+		.service-cell[data-service-panel="marketing"] .service-code,
+		.service-cell[data-service-panel="design"] .service-code,
+		.service-cell[data-service-panel="merch"] .service-code {
+			top: auto;
+			bottom: 0;
+		}
+
+		.service-cell[data-service-panel]:hover .service-code,
+		.service-cell[data-service-panel]:focus-visible .service-code {
+			width: 200%;
+			height: 200%;
+		}
+	}
+
+	/* Tablet (2 columns x 3 rows): the pairing reflows to row 1 = Website /
+	   AI, row 2 = SEO & AEO / Digital Marketing, row 3 = Graphic Design &
+	   Printing / Merchandising. AI and Digital Marketing both land in the
+	   last column here, so they anchor right and grow left. Graphic
+	   Design & Printing and Merchandising land in the last row, so they
+	   anchor from the bottom and grow up — Merchandising needs both flips
+	   at once, being last row AND column. */
+	@media (min-width: 640px) and (max-width: 1023px) {
+		.service-cell[data-service-panel="ai"] .service-code,
+		.service-cell[data-service-panel="marketing"] .service-code,
+		.service-cell[data-service-panel="merch"] .service-code {
+			left: auto;
+			right: 0;
+		}
+
+		.service-cell[data-service-panel="design"] .service-code,
+		.service-cell[data-service-panel="merch"] .service-code {
+			top: auto;
+			bottom: 0;
+		}
+
+		.service-cell[data-service-panel]:hover .service-code,
+		.service-cell[data-service-panel]:focus-visible .service-code {
+			width: 200%;
+			height: 200%;
+		}
+	}
+
+	/* Mobile (1 column): no horizontal room to grow into, so only the
+	   height doubles. Merchandising is the last tile in the stack, so it
+	   anchors from the bottom and grows up instead of off the page. */
+	@media (max-width: 639px) {
+		.service-cell[data-service-panel="merch"] .service-code {
+			top: auto;
+			bottom: 0;
+		}
+
+		.service-cell[data-service-panel]:hover .service-code,
+		.service-cell[data-service-panel]:focus-visible .service-code {
+			height: 200%;
+		}
+	}
+
+	.service-cell[data-service-panel]:hover .service-code-body,
+	.service-cell[data-service-panel]:focus-visible .service-code-body {
+		font-size: 1rem;
+	}
+
+	.service-cell[data-service-panel]:hover .service-chat-body,
+	.service-cell[data-service-panel]:focus-visible .service-chat-body {
+		font-size: 0.8125rem;
+	}
+
+	.service-cell[data-service-panel]:hover .service-search-results,
+	.service-cell[data-service-panel]:focus-visible .service-search-results {
+		font-size: 0.8125rem;
+	}
+
+	.service-cell[data-service-panel]:hover .service-dash-body,
+	.service-cell[data-service-panel]:focus-visible .service-dash-body {
+		font-size: 0.8125rem;
+	}
+
+	.service-code-bar {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.65rem 0.9rem;
+		background: #161617;
+	}
+
+	.service-code-dot {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: #4a4a4b;
+	}
+
+	.service-code-filename {
+		margin-left: 0.5rem;
+		font-family: ui-monospace, "SF Mono", Menlo, monospace;
+		font-size: 0.6875rem;
+		color: #9a9a9a;
+	}
+
+	.service-code-body {
+		flex: 1;
+		overflow: hidden;
+		padding: 0.9rem 1rem;
+		font-family: ui-monospace, "SF Mono", Menlo, monospace;
+		font-size: 0.6875rem;
+		line-height: 1.6;
+		transition: font-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.service-code-line {
+		/* Padding (not flex) reserves room for the line number, so a
+		   wrapped continuation line indents to the text's own start
+		   instead of falling back under the line-number gutter. */
+		position: relative;
+		padding-left: 2.35em;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	.service-code-ln {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 1.6em;
+		color: #58585a;
+		text-align: right;
+	}
+
+	.service-code-text {
+		color: #e2e2e3;
+	}
+
+	.service-code-cursor {
+		display: inline-block;
+		width: 0.4rem;
+		height: 0.8em;
+		margin-left: 1.85rem;
+		background: #fff;
+		animation: service-code-blink 1s steps(1, jump-none) infinite;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-code,
+		.service-code-body,
+		.service-chat-body {
+			transition: none;
+		}
+
+		.service-code-cursor {
+			animation: none;
+		}
+	}
+
+	@keyframes service-code-blink {
+		50% {
+			opacity: 0;
+		}
+	}
+
+	/* A ChatGPT-style AI assistant window: light theme, chat bubbles,
+	   instead of the dark VS Code look used for the Website panel. */
+	.service-code--chat {
+		background: #ffffff;
+	}
+
+	.service-chat-bar {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.65rem 0.9rem;
+		border-bottom: 1px solid #ececec;
+		background: #f7f7f8;
+	}
+
+	.service-chat-badge {
+		display: flex;
+		flex: none;
+		align-items: center;
+		justify-content: center;
+		width: 1.3rem;
+		height: 1.3rem;
+		border-radius: 50%;
+		background: #0f0f0f;
+		color: #fff;
+		font-size: 0.6rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+	}
+
+	.service-chat-title {
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: #3d3d3d;
+	}
+
+	.service-chat-body {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		/* Grows into a scrolling transcript as turns accumulate, auto-
+		   scrolled to the newest message by the script below — like a
+		   real chat/session log rather than one line replacing another. */
+		overflow-y: auto;
+		overflow-x: hidden;
+		scrollbar-width: none;
+		padding: 0.95rem 1rem;
+		background: #f7f7f8;
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.6875rem;
+		line-height: 1.5;
+		color: #1f1f1f;
+		transition: font-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.service-chat-body::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* Decorative composer bar, like the message box every AI chat app
+	   (ChatGPT, Gemini, Claude) pins to the bottom — the strongest single
+	   cue that this panel is "a chat app" rather than a generic text block. */
+	.service-chat-composer {
+		display: flex;
+		flex: none;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		margin: 0 0.75rem 0.75rem;
+		padding: 0.5rem 0.5rem 0.5rem 0.95rem;
+		border: 1px solid #e6e6e6;
+		border-radius: 999px;
+		background: #fff;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+	}
+
+	.service-chat-composer-field {
+		flex: 1;
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.7rem;
+		color: #1f1f1f;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	/* Shown only while the field has no typed text — the script never sets
+	   placeholder text itself, so this can't go stale. */
+	.service-chat-composer-field:empty::before {
+		content: "Ask anything";
+		color: #9a9a9a;
+	}
+
+	.service-chat-composer-send {
+		display: flex;
+		flex: none;
+		align-items: center;
+		justify-content: center;
+		width: 1.4rem;
+		height: 1.4rem;
+		border-radius: 50%;
+		background: #0f0f0f;
+		color: #fff;
+		font-size: 0.7rem;
+		line-height: 1;
+		transition: transform 0.15s ease, background-color 0.15s ease;
+	}
+
+	/* A quick tap/press effect, toggled by the script right as a typed
+	   question is "sent" into the conversation above. */
+	.service-chat-composer-send.is-pressed {
+		transform: scale(0.8);
+		background: #3d3d3d;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-chat-composer-send {
+			transition: none;
+		}
+	}
+
+	/* A Google-style search results page: light theme, a browser-ish
+	   chrome bar, a search box at the top (not bottom — search bars don't
+	   live where a chat composer does), and results below. */
+	.service-code--search {
+		background: #ffffff;
+	}
+
+	.service-search-bar {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.65rem 0.9rem;
+		background: #f7f7f8;
+		border-bottom: 1px solid #ececec;
+	}
+
+	.service-search-dot {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: #d6d6d6;
+	}
+
+	.service-search-title {
+		margin-left: 0.5rem;
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		color: #6b6b6b;
+	}
+
+	.service-search-box {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 0.55rem;
+		margin: 0.85rem 0.95rem 0;
+		padding: 0.5rem 0.85rem;
+		border: 1px solid #e0e0e0;
+		border-radius: 999px;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+		transition: transform 0.15s ease, border-color 0.15s ease;
+	}
+
+	/* Tap/press effect, toggled by the script right as a typed query is
+	   "searched". */
+	.service-search-box.is-pressed {
+		transform: scale(0.97);
+		border-color: #b7c0ff;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-search-box {
+			transition: none;
+		}
+	}
+
+	.service-search-icon {
+		flex: none;
+		width: 0.85rem;
+		height: 0.85rem;
+		color: #9a9a9a;
+	}
+
+	.service-search-field {
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.7rem;
+		color: #1f1f1f;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	.service-search-field:empty::before {
+		content: "Search";
+		color: #9a9a9a;
+	}
+
+	.service-search-results {
+		flex: 1;
+		overflow: hidden;
+		padding: 0.85rem 0.95rem 0.95rem;
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.6875rem;
+		line-height: 1.5;
+		transition: font-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-search-results {
+			transition: none;
+		}
+	}
+
+	/* An ads-manager-style campaign dashboard: light theme, matching the
+	   chat and search panels, with KPI tiles that count up on reveal. */
+	.service-code--dash {
+		background: #ffffff;
+	}
+
+	.service-dash-bar {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.65rem 0.9rem;
+		background: #f7f7f8;
+		border-bottom: 1px solid #ececec;
+	}
+
+	.service-dash-dot {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: #d6d6d6;
+	}
+
+	.service-dash-title {
+		margin-left: 0.5rem;
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		color: #6b6b6b;
+	}
+
+	.service-dash-body {
+		flex: 1;
+		overflow: hidden;
+		padding: 0.95rem;
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.6875rem;
+		transition: font-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-dash-body {
+			transition: none;
+		}
+	}
+
+	/* A Figma/Illustrator-style design canvas: a small tool strip above a
+	   canvas where a brand mark and palette swatches assemble into view. */
+	.service-code--design {
+		background: #ffffff;
+	}
+
+	.service-design-bar {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.65rem 0.9rem;
+		background: #f7f7f8;
+		border-bottom: 1px solid #ececec;
+	}
+
+	.service-design-dot {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: #d6d6d6;
+	}
+
+	.service-design-title {
+		margin-left: 0.5rem;
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		color: #6b6b6b;
+	}
+
+	.service-design-toolbar {
+		display: flex;
+		flex: none;
+		gap: 0.4rem;
+		padding: 0.6rem 0.9rem;
+		border-bottom: 1px solid #f0f0f0;
+	}
+
+	.service-design-tool {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.6rem;
+		height: 1.6rem;
+		border-radius: 0.4rem;
+		color: #8a8a8a;
+		transition: background-color 0.25s ease, color 0.25s ease;
+	}
+
+	.service-design-tool svg {
+		width: 0.85rem;
+		height: 0.85rem;
+	}
+
+	.service-design-tool.is-active {
+		background: #eef1ff;
+		color: #3b55d9;
+	}
+
+	.service-design-canvas {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+		padding: 1rem;
+		background: #f7f7f8;
+	}
+
+	.service-design-mark {
+		position: relative;
+		width: 3.4rem;
+		height: 3.4rem;
+	}
+
+	.service-design-mark-shape {
+		position: absolute;
+		inset: 0;
+		transform: scale(0.4);
+		opacity: 0;
+		transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease, background-color 0.4s ease;
+	}
+
+	.service-design-mark-a {
+		clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+	}
+
+	.service-design-mark-b {
+		inset: 38% 2% 2% 38%;
+		border-radius: 50%;
+	}
+
+	.service-design-mark.is-visible .service-design-mark-shape {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	.service-design-swatches {
+		display: flex;
+		gap: 0.4rem;
+	}
+
+	.service-design-label {
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.7rem;
+		font-weight: 500;
+		color: #4a4a4a;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-design-tool,
+		.service-design-mark-shape {
+			transition: none;
+		}
+	}
+
+	/* A small product catalog: mug (with rising steam), water bottle, and
+	   tee, revealing staggered on hover — no cycling needed, so this panel
+	   is pure CSS, no script required. */
+	.service-code--merch {
+		background: #ffffff;
+	}
+
+	.service-merch-bar {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.65rem 0.9rem;
+		background: #f7f7f8;
+		border-bottom: 1px solid #ececec;
+	}
+
+	.service-merch-dot {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: #d6d6d6;
+	}
+
+	.service-merch-title {
+		margin-left: 0.5rem;
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		color: #6b6b6b;
+	}
+
+	.service-merch-canvas {
+		position: relative;
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+		gap: 1rem;
+		padding: 1.5rem;
+		background: #f7f7f8;
+	}
+
+	.service-merch-item {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.45rem;
+		opacity: 0;
+		transform: translateY(12px) scale(0.92);
+		transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.service-cell:hover .service-merch-item,
+	.service-cell:focus-visible .service-merch-item {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	.service-merch-item--mug {
+		transition-delay: 0s;
+	}
+
+	/* A slight scattered, floating arrangement — like products drifting at
+	   different heights — instead of a perfectly even row. */
+	.service-merch-item--bottle {
+		transition-delay: 0.1s;
+		margin-top: -0.5rem;
+	}
+
+	.service-merch-item--shirt {
+		transition-delay: 0.2s;
+		margin-top: 0.35rem;
+	}
+
+	/* Each product tilts slightly and drifts in a gentle bob while
+	   hovered, like it's floating — kept on its own wrapper so the
+	   continuous animation doesn't fight the entrance transition above,
+	   which also animates transform on the parent element. */
+	.service-merch-float {
+		display: inline-flex;
+		transform: rotate(var(--merch-tilt, 0deg));
+	}
+
+	.service-merch-float--mug {
+		--merch-tilt: -7deg;
+	}
+
+	.service-merch-float--bottle {
+		--merch-tilt: 5deg;
+	}
+
+	.service-merch-float--shirt {
+		--merch-tilt: -4deg;
+	}
+
+	.service-cell:hover .service-merch-float,
+	.service-cell:focus-visible .service-merch-float {
+		animation: service-merch-bob 3.2s ease-in-out infinite;
+	}
+
+	.service-cell:hover .service-merch-float--bottle,
+	.service-cell:focus-visible .service-merch-float--bottle {
+		animation-delay: 0.3s;
+	}
+
+	.service-cell:hover .service-merch-float--shirt,
+	.service-cell:focus-visible .service-merch-float--shirt {
+		animation-delay: 0.6s;
+	}
+
+	@keyframes service-merch-bob {
+		0%,
+		100% {
+			transform: translateY(0) rotate(var(--merch-tilt, 0deg));
+		}
+		50% {
+			transform: translateY(-4px) rotate(var(--merch-tilt, 0deg));
+		}
+	}
+
+	/* Small sparkle accents scattered around the products, twinkling while
+	   hovered. */
+	.service-merch-sparkle {
+		position: absolute;
+		top: -0.3rem;
+		right: -0.35rem;
+		width: 0.65rem;
+		height: 0.65rem;
+		background: #8fa0ff;
+		clip-path: polygon(50% 0%, 61% 35%, 100% 50%, 61% 65%, 50% 100%, 39% 65%, 0% 50%, 39% 35%);
+		opacity: 0;
+		transform: scale(0.6);
+		z-index: 1;
+	}
+
+	.service-merch-sparkle-b {
+		top: -0.1rem;
+		right: -0.5rem;
+		width: 0.5rem;
+		height: 0.5rem;
+	}
+
+	.service-merch-sparkle-c {
+		top: 0.1rem;
+		right: -0.25rem;
+		width: 0.5rem;
+		height: 0.5rem;
+	}
+
+	.service-cell:hover .service-merch-sparkle,
+	.service-cell:focus-visible .service-merch-sparkle {
+		animation: service-merch-twinkle 2.4s ease-in-out infinite;
+	}
+
+	.service-cell:hover .service-merch-sparkle-b,
+	.service-cell:focus-visible .service-merch-sparkle-b {
+		animation-delay: 0.5s;
+	}
+
+	.service-cell:hover .service-merch-sparkle-c,
+	.service-cell:focus-visible .service-merch-sparkle-c {
+		animation-delay: 1s;
+	}
+
+	@keyframes service-merch-twinkle {
+		0%,
+		100% {
+			opacity: 0;
+			transform: scale(0.6);
+		}
+		50% {
+			opacity: 0.9;
+			transform: scale(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-cell:hover .service-merch-float,
+		.service-cell:focus-visible .service-merch-float,
+		.service-cell:hover .service-merch-sparkle,
+		.service-cell:focus-visible .service-merch-sparkle {
+			animation: none;
+		}
+	}
+
+	/* Each product is hand-drawn on its own canvas (gradients, shading,
+	   soft shadows) by the script below — same drawing techniques as the
+	   homepage hero's 3D scene, applied to a small static illustration
+	   instead of an interactive one. */
+	.service-merch-icon-canvas {
+		display: block;
+		width: 4.5rem;
+		height: 4.5rem;
+		transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1), height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	/* Products grow further once the panel itself expands on hover, so
+	   they fill the much larger space instead of looking lost in it. */
+	.service-cell[data-service-panel]:hover .service-merch-icon-canvas,
+	.service-cell[data-service-panel]:focus-visible .service-merch-icon-canvas {
+		width: 6.5rem;
+		height: 6.5rem;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-merch-icon-canvas {
+			transition: none;
+		}
+	}
+
+	.service-merch-label {
+		font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: #6b6b6b;
+	}
+
+	.service-merch-steam {
+		position: absolute;
+		top: -0.1rem;
+		left: 50%;
+		width: 0.2rem;
+		height: 0.55rem;
+		border-radius: 999px;
+		background: #b9c3ff;
+		opacity: 0;
+		transform: translate(-50%, 0) scaleY(0.6);
+	}
+
+	.service-cell:hover .service-merch-steam,
+	.service-cell:focus-visible .service-merch-steam {
+		animation: service-merch-steam-rise 1.8s ease-in-out infinite;
+	}
+
+	.service-merch-steam-a {
+		margin-left: -0.45rem;
+		animation-delay: 0s;
+	}
+
+	.service-merch-steam-b {
+		animation-delay: 0.3s;
+	}
+
+	.service-merch-steam-c {
+		margin-left: 0.45rem;
+		animation-delay: 0.6s;
+	}
+
+	@keyframes service-merch-steam-rise {
+		0% {
+			opacity: 0;
+			transform: translate(-50%, 0) scaleY(0.6);
+		}
+		30% {
+			opacity: 0.8;
+		}
+		100% {
+			opacity: 0;
+			transform: translate(-50%, -0.9rem) scaleY(1.3);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.service-merch-item {
+			transition: none;
+		}
+
+		.service-cell:hover .service-merch-steam,
+		.service-cell:focus-visible .service-merch-steam {
+			animation: none;
+			opacity: 0;
+		}
+	}
+
+	/* Everything below is created at runtime by the script
+	   (document.createElement), so it never receives Astro's build-time
+	   style-scoping attribute — :global() is required or none of these
+	   rules would ever match. Bubbles sit on alternating sides, like an
+	   ordinary messaging app, so it reads unmistakably as a chat. */
+	:global(.service-chat-row) {
+		display: flex;
+		/* Each new turn rises up from the composer at the bottom into
+		   place, like a real chat app sending/receiving a message, rather
+		   than just appearing. Plays once per row since it only runs when
+		   the row is first rendered (or first un-hidden). */
+		animation: service-chat-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	:global(.service-chat-row-user) {
+		justify-content: flex-end;
+	}
+
+	:global(.service-chat-row-assistant) {
+		justify-content: flex-start;
+	}
+
+	/* ChatGPT/Gemini-style turn: the user's message sits in a light pill
+	   bubble on the right; the assistant's reply is plain flowing text on
+	   the left with no bubble, same as those apps render it. */
+	:global(.service-chat-bubble-user) {
+		max-width: 78%;
+		padding: 0.5rem 0.8rem;
+		border-radius: 1.1rem;
+		background: #f1f1f1;
+		color: #1f1f1f;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	:global(.service-chat-bubble-assistant) {
+		width: 100%;
+		color: #1f1f1f;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	:global(.service-chat-bubble-user:empty),
+	:global(.service-chat-bubble-assistant:empty) {
+		display: none;
+	}
+
+	:global(.service-chat-typing) {
+		display: inline-flex;
+		flex: none;
+		align-items: center;
+		gap: 0.22rem;
+		padding: 0.4rem 0;
+	}
+
+	:global(.service-chat-typing[hidden]) {
+		display: none;
+	}
+
+	:global(.service-chat-typing span) {
+		width: 0.3rem;
+		height: 0.3rem;
+		border-radius: 50%;
+		background: #b0b0b0;
+		animation: service-chat-bounce 1.1s ease-in-out infinite;
+	}
+
+	:global(.service-chat-typing span:nth-child(2)) {
+		animation-delay: 0.15s;
+	}
+
+	:global(.service-chat-typing span:nth-child(3)) {
+		animation-delay: 0.3s;
+	}
+
+	/* Icon row under a finished reply, like the copy/thumbs/regenerate
+	   row ChatGPT and Gemini both show — revealed once that turn's answer
+	   has fully streamed in. */
+	:global(.service-chat-actions) {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 0.1rem;
+		color: #9a9a9a;
+		animation: service-chat-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	:global(.service-chat-actions[hidden]) {
+		display: none;
+	}
+
+	:global(.service-chat-action) {
+		display: inline-flex;
+	}
+
+	:global(.service-chat-action svg) {
+		display: block;
+		width: 0.7rem;
+		height: 0.7rem;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.service-chat-typing span) {
+			animation: none;
+		}
+
+		:global(.service-chat-row),
+		:global(.service-chat-actions) {
+			animation: none;
+		}
+	}
+
+	@keyframes service-chat-bounce {
+		0%,
+		80%,
+		100% {
+			transform: translateY(0);
+			opacity: 0.4;
+		}
+		40% {
+			transform: translateY(-2.5px);
+			opacity: 1;
+		}
+	}
+
+	@keyframes service-chat-rise {
+		from {
+			opacity: 0;
+			transform: translateY(14px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Search results content is also created at runtime by the script —
+	   same :global() requirement as the chat bubbles above. */
+	:global(.service-search-group) {
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
+		animation: service-chat-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	:global(.service-search-overview) {
+		padding: 0.65rem 0.8rem;
+		border-radius: 0.75rem;
+		background: #eef1ff;
+		color: #30344a;
+	}
+
+	:global(.service-search-overview-label) {
+		display: flex;
+		align-items: center;
+		gap: 0.3rem;
+		margin-bottom: 0.3rem;
+		font-size: 0.6rem;
+		font-weight: 700;
+		color: #3b55d9;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	:global(.service-search-overview-text) {
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	:global(.service-search-organic) {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		animation: service-chat-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	:global(.service-search-domain-row) {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	:global(.service-search-favicon) {
+		display: flex;
+		flex: none;
+		align-items: center;
+		justify-content: center;
+		width: 1.1rem;
+		height: 1.1rem;
+		border-radius: 50%;
+		background: #0f0f0f;
+		color: #fff;
+		font-size: 0.55rem;
+		font-weight: 700;
+	}
+
+	:global(.service-search-domain) {
+		color: #3c6b3f;
+	}
+
+	:global(.service-search-result-title) {
+		color: #3454d1;
+		font-weight: 500;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	:global(.service-search-snippet) {
+		color: #5c5c5c;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.service-search-group),
+		:global(.service-search-organic) {
+			animation: none;
+		}
+	}
+
+	/* Dashboard content is also created at runtime by the script — same
+	   :global() requirement as the chat/search content above. */
+	:global(.service-dash-group) {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		animation: service-chat-rise 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	:global(.service-dash-name) {
+		font-weight: 600;
+		color: #1f1f1f;
+	}
+
+	:global(.service-dash-grid) {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.6rem;
+	}
+
+	:global(.service-dash-tile) {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: 0.55rem 0.65rem;
+		border-radius: 0.6rem;
+		background: #f7f7f8;
+	}
+
+	:global(.service-dash-label) {
+		font-size: 0.625rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: #9a9a9a;
+	}
+
+	:global(.service-dash-value) {
+		font-size: 1.05em;
+		font-weight: 700;
+		color: #1f1f1f;
+	}
+
+	:global(.service-dash-change) {
+		font-size: 0.625rem;
+		font-weight: 600;
+		color: #1a9e5c;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.service-dash-group) {
+			animation: none;
+		}
+	}
+
+	/* Design swatches are also created at runtime by the script. */
+	:global(.service-design-swatch) {
+		width: 1.15rem;
+		height: 1.15rem;
+		border-radius: 50%;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		transform: scale(0);
+		opacity: 0;
+		animation: service-design-swatch-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.service-design-swatch) {
+			animation: none;
+			transform: none;
+			opacity: 1;
+		}
+	}
+
+	@keyframes service-design-swatch-in {
+		to {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+</style>
+
+<script>
+	const hosts = document.querySelectorAll<HTMLElement>('[data-service-panel]');
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	// Variable per-character delay plus extra pauses at line breaks and
+	// punctuation, so the typing reads like an actual person typing rather
+	// than a steady machine-paced reveal.
+	const minDelay = 32;
+	const maxDelay = 80;
+	const lineBreakPause = 260;
+	const punctuationPause = 110;
+	const hesitationChance = 0.04;
+	const hesitationPause = 200;
+
+	for (const host of hosts) {
+		const codeOverlay = host.querySelector<HTMLElement>('.service-code');
+		// The overlay sits inside the <a>; swallow clicks on it while it's
+		// visible so the enlarged preview can't be clicked through to
+		// navigate, or to activate whichever tile it happens to be covering.
+		codeOverlay?.addEventListener('click', (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+		});
+
+		const lineEls = Array.from(host.querySelectorAll<HTMLElement>('.service-code-text'));
+		const lines = lineEls.map((el) => el.dataset.full ?? '');
+		const fullText = lines.join('\n');
+
+		let typed = 0;
+		let timer: number | undefined;
+
+		const paint = () => {
+			const visible = fullText.slice(0, typed).split('\n');
+			lineEls.forEach((el, index) => {
+				el.textContent = visible[index] ?? '';
+			});
+		};
+
+		const stop = () => {
+			if (timer !== undefined) {
+				window.clearTimeout(timer);
+				timer = undefined;
+			}
+		};
+
+		const step = () => {
+			if (typed >= fullText.length) return;
+			const char = fullText[typed];
+			typed += 1;
+			paint();
+
+			let delay = minDelay + Math.random() * (maxDelay - minDelay);
+			if (char === '\n') delay += lineBreakPause;
+			else if (',;{}[]'.includes(char)) delay += punctuationPause;
+			if (typed < fullText.length && Math.random() < hesitationChance) delay += hesitationPause;
+
+			timer = window.setTimeout(step, delay);
+		};
+
+		const start = () => {
+			stop();
+			if (prefersReducedMotion) {
+				typed = fullText.length;
+				paint();
+				return;
+			}
+			// Resume from wherever typing left off rather than restarting,
+			// so mousing out and back in continues the same pass.
+			if (typed < fullText.length) timer = window.setTimeout(step, minDelay);
+		};
+
+		const pause = () => {
+			stop();
+		};
+
+		host.addEventListener('mouseenter', start);
+		host.addEventListener('mouseleave', pause);
+		host.addEventListener('focus', start);
+		host.addEventListener('blur', pause);
+	}
+
+	// AI chat panel: builds up a scrolling transcript, one turn at a time —
+	// types a question, pauses with a "typing…" indicator, streams in the
+	// answer, then appends the next turn below it (like a real chat/coding
+	// session log) and auto-scrolls to keep the newest turn in view.
+	const chatHosts = document.querySelectorAll<HTMLElement>('[data-service-panel="ai"]');
+	const thinkPause = 550;
+	const turnPause = 1100;
+	const maxTurns = 4;
+
+	interface QaPair {
+		question: string;
+		answer: string;
+	}
+
+	interface ChatTurn {
+		userBubble: HTMLElement;
+		typing: HTMLElement;
+		assistantBubble: HTMLElement;
+		actions: HTMLElement;
+	}
+
+	// Minimal lucide-style icon paths (copy / thumbs up / thumbs down /
+	// regenerate) for the row ChatGPT and Gemini both show under a
+	// finished reply — the detail that most says "this is an AI chat app".
+	const chatActionIcons: Record<string, string> = {
+		copy: '<path d="M9 9h11a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2Z"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+		up: '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>',
+		down: '<path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/>',
+		redo: '<path d="M3 12a9 9 0 1 0 2.64-6.36L3 8"/><path d="M3 3v5h5"/>',
+	};
+
+	const createChatActions = (): HTMLElement => {
+		const row = document.createElement('div');
+		row.className = 'service-chat-actions';
+		row.hidden = true;
+		for (const name of ['copy', 'up', 'down', 'redo']) {
+			const button = document.createElement('span');
+			button.className = 'service-chat-action';
+			const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+			svg.setAttribute('viewBox', '0 0 24 24');
+			svg.setAttribute('fill', 'none');
+			svg.setAttribute('stroke', 'currentColor');
+			svg.setAttribute('stroke-width', '2');
+			svg.setAttribute('stroke-linecap', 'round');
+			svg.setAttribute('stroke-linejoin', 'round');
+			svg.innerHTML = chatActionIcons[name];
+			button.append(svg);
+			row.append(button);
+		}
+		return row;
+	};
+
+	for (const host of chatHosts) {
+		const panel = host.querySelector<HTMLElement>('.service-code--chat');
+		const log = host.querySelector<HTMLElement>('[data-chat-log]');
+		const composerField = host.querySelector<HTMLElement>('[data-composer-field]');
+		const sendButton = host.querySelector<HTMLElement>('[data-composer-send]');
+		if (!panel || !log || !composerField || !sendButton) continue;
+
+		let pairs: QaPair[] = [];
+		try {
+			pairs = JSON.parse(panel.dataset.qa ?? '[]');
+		} catch {
+			pairs = [];
+		}
+		if (!pairs.length) continue;
+
+		let pairIndex = 0;
+		let composerTyped = 0;
+		let answerTyped = 0;
+		// 0 not started, 1 typing the question into the composer, 2 a beat
+		// before sending, 3 send-button press effect, 4 thinking, 5 typing
+		// the answer, 6 holding the finished answer before the next turn.
+		let phase: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0;
+		let timer: number | undefined;
+		let turnCount = 0;
+		let active: ChatTurn | undefined;
+
+		const current = () => pairs[pairIndex % pairs.length];
+
+		const scrollToEnd = () => {
+			log.scrollTop = log.scrollHeight;
+		};
+
+		const addTurn = (): ChatTurn => {
+			const userRow = document.createElement('div');
+			userRow.className = 'service-chat-row service-chat-row-user';
+			const userBubble = document.createElement('span');
+			userBubble.className = 'service-chat-bubble service-chat-bubble-user';
+			userRow.append(userBubble);
+
+			const assistantRow = document.createElement('div');
+			assistantRow.className = 'service-chat-row service-chat-row-assistant';
+			const typing = document.createElement('span');
+			typing.className = 'service-chat-typing';
+			typing.hidden = true;
+			typing.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
+			const assistantBubble = document.createElement('span');
+			assistantBubble.className = 'service-chat-bubble service-chat-bubble-assistant';
+			assistantRow.append(typing, assistantBubble);
+
+			const actions = createChatActions();
+
+			log.append(userRow, assistantRow, actions);
+			turnCount += 1;
+			// Keep the DOM bounded during a long hover, same as a real
+			// session log scrolling older turns out of memory. Each turn
+			// adds three elements (user row, assistant row, actions row).
+			while (turnCount > maxTurns) {
+				log.firstElementChild?.remove();
+				log.firstElementChild?.remove();
+				log.firstElementChild?.remove();
+				turnCount -= 1;
+			}
+			return { userBubble, typing, assistantBubble, actions };
+		};
+
+		const stop = () => {
+			if (timer !== undefined) {
+				window.clearTimeout(timer);
+				timer = undefined;
+			}
+		};
+
+		const step = () => {
+			const { question, answer } = current();
+
+			// Type the question into the composer, like the user is
+			// actually writing it, before it's ever posted to the thread.
+			if (phase === 1) {
+				if (composerTyped >= question.length) {
+					phase = 2;
+					timer = window.setTimeout(step, 320);
+					return;
+				}
+				composerTyped += 1;
+				composerField.textContent = question.slice(0, composerTyped);
+				timer = window.setTimeout(step, 28 + Math.random() * 45);
+				return;
+			}
+
+			// A short "about to send" beat, then a tap/press effect on the
+			// send button — the click the user asked to see.
+			if (phase === 2) {
+				phase = 3;
+				sendButton.classList.add('is-pressed');
+				timer = window.setTimeout(step, 160);
+				return;
+			}
+
+			// Posting: the full question appears in the thread at once
+			// (it was already "typed" in the composer above) and the
+			// composer clears back to its placeholder.
+			if (phase === 3) {
+				sendButton.classList.remove('is-pressed');
+				composerField.textContent = '';
+				composerTyped = 0;
+				active = addTurn();
+				active.userBubble.textContent = question;
+				scrollToEnd();
+				phase = 4;
+				timer = window.setTimeout(step, 260);
+				return;
+			}
+
+			if (phase === 4) {
+				if (active) active.typing.hidden = false;
+				scrollToEnd();
+				phase = 5;
+				timer = window.setTimeout(step, thinkPause);
+				return;
+			}
+
+			if (phase === 5) {
+				if (answerTyped >= answer.length) {
+					if (active) active.actions.hidden = false;
+					scrollToEnd();
+					phase = 6;
+					timer = window.setTimeout(step, turnPause);
+					return;
+				}
+				if (answerTyped === 0 && active) active.typing.hidden = true;
+				answerTyped += 1;
+				if (active) active.assistantBubble.textContent = answer.slice(0, answerTyped);
+				scrollToEnd();
+				timer = window.setTimeout(step, 14 + Math.random() * 22);
+				return;
+			}
+
+			if (phase === 6) {
+				pairIndex += 1;
+				answerTyped = 0;
+				phase = 1;
+				timer = window.setTimeout(step, 28 + Math.random() * 45);
+			}
+		};
+
+		const start = () => {
+			stop();
+			if (prefersReducedMotion) {
+				// Show one finished exchange; skip the auto-cycling (and
+				// the composer/typing/press animation) so reduced-motion
+				// users see stable, non-animated content.
+				if (!active) {
+					active = addTurn();
+					active.userBubble.textContent = current().question;
+				}
+				answerTyped = current().answer.length;
+				active.assistantBubble.textContent = current().answer;
+				active.typing.hidden = true;
+				active.actions.hidden = false;
+				composerField.textContent = '';
+				scrollToEnd();
+				return;
+			}
+			if (phase === 0) phase = 1;
+			timer = window.setTimeout(step, 24);
+		};
+
+		const pause = () => {
+			stop();
+		};
+
+		host.addEventListener('mouseenter', start);
+		host.addEventListener('mouseleave', pause);
+		host.addEventListener('focus', start);
+		host.addEventListener('blur', pause);
+	}
+
+	// SEO & AEO panel: types a query into the search box, "presses" search,
+	// then an AI Overview card streams in, followed by the organic result —
+	// looping through a few queries while hovered.
+	const searchHosts = document.querySelectorAll<HTMLElement>('[data-service-panel="seo"]');
+	const searchThinkPause = 500;
+	const searchTurnPause = 1300;
+
+	interface SearchQuery {
+		query: string;
+		overview: string;
+		title: string;
+		snippet: string;
+	}
+
+	for (const host of searchHosts) {
+		const panel = host.querySelector<HTMLElement>('.service-code--search');
+		const searchField = host.querySelector<HTMLElement>('[data-search-field]');
+		const searchBox = host.querySelector<HTMLElement>('.service-search-box');
+		const results = host.querySelector<HTMLElement>('[data-search-results]');
+		if (!panel || !searchField || !searchBox || !results) continue;
+
+		const domain = panel.dataset.domain ?? '';
+		let queries: SearchQuery[] = [];
+		try {
+			queries = JSON.parse(panel.dataset.queries ?? '[]');
+		} catch {
+			queries = [];
+		}
+		if (!queries.length) continue;
+
+		let queryIndex = 0;
+		let queryTyped = 0;
+		let overviewTyped = 0;
+		// 0 not started, 1 typing the query, 2 a beat before pressing
+		// search, 3 search press effect, 4 typing the AI overview, 5 the
+		// organic result appears, 6 holding before the next query.
+		let phase: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0;
+		let timer: number | undefined;
+		let overviewTextEl: HTMLElement | undefined;
+
+		const current = () => queries[queryIndex % queries.length];
+
+		const stop = () => {
+			if (timer !== undefined) {
+				window.clearTimeout(timer);
+				timer = undefined;
+			}
+		};
+
+		const buildOverview = () => {
+			const group = document.createElement('div');
+			group.className = 'service-search-group';
+			const card = document.createElement('div');
+			card.className = 'service-search-overview';
+			const label = document.createElement('div');
+			label.className = 'service-search-overview-label';
+			label.textContent = '✦ AI Overview';
+			const text = document.createElement('div');
+			text.className = 'service-search-overview-text';
+			card.append(label, text);
+			group.append(card);
+			results.append(group);
+			overviewTextEl = text;
+		};
+
+		const appendOrganicResult = () => {
+			const { title, snippet } = current();
+			const organic = document.createElement('div');
+			organic.className = 'service-search-organic';
+
+			const domainRow = document.createElement('div');
+			domainRow.className = 'service-search-domain-row';
+			const favicon = document.createElement('span');
+			favicon.className = 'service-search-favicon';
+			favicon.textContent = 'A';
+			const domainEl = document.createElement('span');
+			domainEl.className = 'service-search-domain';
+			domainEl.textContent = domain;
+			domainRow.append(favicon, domainEl);
+
+			const titleEl = document.createElement('div');
+			titleEl.className = 'service-search-result-title';
+			titleEl.textContent = title;
+
+			const snippetEl = document.createElement('div');
+			snippetEl.className = 'service-search-snippet';
+			snippetEl.textContent = snippet;
+
+			organic.append(domainRow, titleEl, snippetEl);
+			results.append(organic);
+		};
+
+		const step = () => {
+			const { query, overview } = current();
+
+			// Type the search query, like the user is actually searching.
+			if (phase === 1) {
+				if (queryTyped >= query.length) {
+					phase = 2;
+					timer = window.setTimeout(step, 320);
+					return;
+				}
+				queryTyped += 1;
+				searchField.textContent = query.slice(0, queryTyped);
+				timer = window.setTimeout(step, 30 + Math.random() * 45);
+				return;
+			}
+
+			// The tap/press effect on the search box the user asked for.
+			if (phase === 2) {
+				phase = 3;
+				searchBox.classList.add('is-pressed');
+				timer = window.setTimeout(step, 150);
+				return;
+			}
+
+			// Clear any previous results and show the AI Overview card
+			// (label visible immediately, text streams in next).
+			if (phase === 3) {
+				searchBox.classList.remove('is-pressed');
+				results.innerHTML = '';
+				buildOverview();
+				phase = 4;
+				timer = window.setTimeout(step, searchThinkPause);
+				return;
+			}
+
+			if (phase === 4) {
+				if (overviewTyped >= overview.length) {
+					phase = 5;
+					timer = window.setTimeout(step, 260);
+					return;
+				}
+				overviewTyped += 1;
+				if (overviewTextEl) overviewTextEl.textContent = overview.slice(0, overviewTyped);
+				timer = window.setTimeout(step, 12 + Math.random() * 20);
+				return;
+			}
+
+			// The classic organic result renders in one go underneath,
+			// same as a real results page — it isn't "typed" like the
+			// AI-generated overview above it.
+			if (phase === 5) {
+				appendOrganicResult();
+				phase = 6;
+				timer = window.setTimeout(step, searchTurnPause);
+				return;
+			}
+
+			if (phase === 6) {
+				queryIndex += 1;
+				queryTyped = 0;
+				overviewTyped = 0;
+				searchField.textContent = '';
+				phase = 1;
+				timer = window.setTimeout(step, 30 + Math.random() * 45);
+			}
+		};
+
+		const start = () => {
+			stop();
+			if (prefersReducedMotion) {
+				// Show one finished query + result; skip the auto-cycling
+				// and the typing/press animation for reduced-motion users.
+				const { query, overview } = current();
+				searchField.textContent = query;
+				results.innerHTML = '';
+				buildOverview();
+				if (overviewTextEl) overviewTextEl.textContent = overview;
+				appendOrganicResult();
+				return;
+			}
+			if (phase === 0) phase = 1;
+			timer = window.setTimeout(step, 24);
+		};
+
+		const pause = () => {
+			stop();
+		};
+
+		host.addEventListener('mouseenter', start);
+		host.addEventListener('mouseleave', pause);
+		host.addEventListener('focus', start);
+		host.addEventListener('blur', pause);
+	}
+
+	// Digital Marketing panel: a campaign's KPI tiles count up on reveal,
+	// then after a hold, cycles to the next campaign.
+	const dashHosts = document.querySelectorAll<HTMLElement>('[data-service-panel="marketing"]');
+	const dashHoldPause = 1500;
+
+	interface DashStat {
+		label: string;
+		value: number;
+		change: string;
+		suffix?: string;
+	}
+
+	interface DashCampaign {
+		name: string;
+		stats: DashStat[];
+	}
+
+	for (const host of dashHosts) {
+		const panel = host.querySelector<HTMLElement>('.service-code--dash');
+		const body = host.querySelector<HTMLElement>('[data-dash-body]');
+		if (!panel || !body) continue;
+
+		let campaigns: DashCampaign[] = [];
+		try {
+			campaigns = JSON.parse(panel.dataset.campaigns ?? '[]');
+		} catch {
+			campaigns = [];
+		}
+		if (!campaigns.length) continue;
+
+		let campaignIndex = 0;
+		// 0 not started, 1 revealing (building + counting up), 2 holding.
+		let phase: 0 | 1 | 2 = 0;
+		let timer: number | undefined;
+		let pendingTimeouts: number[] = [];
+		let pendingFrames: number[] = [];
+
+		const current = () => campaigns[campaignIndex % campaigns.length];
+
+		const stop = () => {
+			if (timer !== undefined) {
+				window.clearTimeout(timer);
+				timer = undefined;
+			}
+			for (const id of pendingTimeouts) window.clearTimeout(id);
+			for (const id of pendingFrames) window.cancelAnimationFrame(id);
+			pendingTimeouts = [];
+			pendingFrames = [];
+		};
+
+		const formatValue = (value: number, suffix?: string) =>
+			suffix ? `${value.toFixed(1)}${suffix}` : Math.round(value).toLocaleString('en-US');
+
+		const animateValue = (el: HTMLElement, target: number, suffix: string | undefined, delay: number) => {
+			const duration = 900;
+			const startId = window.setTimeout(() => {
+				const startTime = performance.now();
+				const tick = (now: number) => {
+					const t = Math.min(1, (now - startTime) / duration);
+					const eased = 1 - (1 - t) ** 3;
+					el.textContent = formatValue(target * eased, suffix);
+					if (t < 1) pendingFrames.push(window.requestAnimationFrame(tick));
+				};
+				pendingFrames.push(window.requestAnimationFrame(tick));
+			}, delay);
+			pendingTimeouts.push(startId);
+		};
+
+		const buildCampaign = (animated: boolean) => {
+			body.innerHTML = '';
+			const { name, stats } = current();
+
+			const group = document.createElement('div');
+			group.className = 'service-dash-group';
+
+			const nameEl = document.createElement('div');
+			nameEl.className = 'service-dash-name';
+			nameEl.textContent = name;
+
+			const grid = document.createElement('div');
+			grid.className = 'service-dash-grid';
+
+			stats.forEach((stat, index) => {
+				const tile = document.createElement('div');
+				tile.className = 'service-dash-tile';
+
+				const label = document.createElement('span');
+				label.className = 'service-dash-label';
+				label.textContent = stat.label;
+
+				const value = document.createElement('span');
+				value.className = 'service-dash-value';
+				value.textContent = formatValue(animated ? 0 : stat.value, stat.suffix);
+
+				const change = document.createElement('span');
+				change.className = 'service-dash-change';
+				change.textContent = `↑ ${stat.change}`;
+
+				tile.append(label, value, change);
+				grid.append(tile);
+
+				if (animated) animateValue(value, stat.value, stat.suffix, index * 100);
+			});
+
+			group.append(nameEl, grid);
+			body.append(group);
+		};
+
+		const step = () => {
+			if (phase === 1) {
+				buildCampaign(true);
+				phase = 2;
+				timer = window.setTimeout(step, 900 + current().stats.length * 100 + dashHoldPause);
+				return;
+			}
+
+			if (phase === 2) {
+				campaignIndex += 1;
+				phase = 1;
+				timer = window.setTimeout(step, 250);
+			}
+		};
+
+		const start = () => {
+			stop();
+			if (prefersReducedMotion) {
+				buildCampaign(false);
+				return;
+			}
+			if (phase === 0) phase = 1;
+			timer = window.setTimeout(step, 24);
+		};
+
+		const pause = () => {
+			stop();
+		};
+
+		host.addEventListener('mouseenter', start);
+		host.addEventListener('mouseleave', pause);
+		host.addEventListener('focus', start);
+		host.addEventListener('blur', pause);
+	}
+
+	// Graphic Design & Printing panel: a brand mark and palette swatches
+	// assemble on the canvas while the toolbar highlights a different tool
+	// every so often, then cycles to the next palette direction.
+	const designHosts = document.querySelectorAll<HTMLElement>('[data-service-panel="design"]');
+	const designHoldPause = 1600;
+
+	interface BrandPalette {
+		name: string;
+		colors: string[];
+	}
+
+	for (const host of designHosts) {
+		const panel = host.querySelector<HTMLElement>('.service-code--design');
+		const mark = host.querySelector<HTMLElement>('[data-design-mark]');
+		const swatchesEl = host.querySelector<HTMLElement>('[data-design-swatches]');
+		const labelEl = host.querySelector<HTMLElement>('[data-design-label]');
+		const tools = Array.from(host.querySelectorAll<HTMLElement>('[data-tool]'));
+		if (!panel || !mark || !swatchesEl || !labelEl) continue;
+
+		let palettes: BrandPalette[] = [];
+		try {
+			palettes = JSON.parse(panel.dataset.palettes ?? '[]');
+		} catch {
+			palettes = [];
+		}
+		if (!palettes.length) continue;
+
+		const markShapes = Array.from(mark.querySelectorAll<HTMLElement>('.service-design-mark-shape'));
+
+		let paletteIndex = 0;
+		// 0 not started, 1 revealing the mark, 2 revealing swatches, 3
+		// revealing the label, 4 holding.
+		let phase: 0 | 1 | 2 | 3 | 4 = 0;
+		let timer: number | undefined;
+		let toolTimer: number | undefined;
+		let toolIndex = 0;
+
+		const current = () => palettes[paletteIndex % palettes.length];
+
+		const stop = () => {
+			if (timer !== undefined) {
+				window.clearTimeout(timer);
+				timer = undefined;
+			}
+		};
+
+		const paintMark = () => {
+			const { colors } = current();
+			markShapes.forEach((shape, index) => {
+				shape.style.backgroundColor = colors[index % colors.length];
+			});
+		};
+
+		const buildSwatches = () => {
+			swatchesEl.innerHTML = '';
+			const { colors } = current();
+			colors.forEach((color, index) => {
+				const dot = document.createElement('span');
+				dot.className = 'service-design-swatch';
+				dot.style.backgroundColor = color;
+				dot.style.animationDelay = `${index * 70}ms`;
+				swatchesEl.append(dot);
+			});
+		};
+
+		const cycleTool = () => {
+			if (!tools.length) return;
+			tools.forEach((tool) => tool.classList.remove('is-active'));
+			tools[toolIndex % tools.length]?.classList.add('is-active');
+			toolIndex += 1;
+		};
+
+		const step = () => {
+			if (phase === 1) {
+				mark.classList.remove('is-visible');
+				swatchesEl.innerHTML = '';
+				labelEl.textContent = '';
+				paintMark();
+				// Force a reflow so the removed class re-triggers the
+				// transition instead of the add being coalesced with it.
+				void mark.offsetWidth;
+				mark.classList.add('is-visible');
+				phase = 2;
+				timer = window.setTimeout(step, 420);
+				return;
+			}
+
+			if (phase === 2) {
+				buildSwatches();
+				phase = 3;
+				timer = window.setTimeout(step, 420);
+				return;
+			}
+
+			if (phase === 3) {
+				labelEl.textContent = current().name;
+				phase = 4;
+				timer = window.setTimeout(step, designHoldPause);
+				return;
+			}
+
+			if (phase === 4) {
+				paletteIndex += 1;
+				phase = 1;
+				timer = window.setTimeout(step, 250);
+			}
+		};
+
+		const start = () => {
+			stop();
+			if (!toolTimer && !prefersReducedMotion) {
+				cycleTool();
+				toolTimer = window.setInterval(cycleTool, 900);
+			}
+			if (prefersReducedMotion) {
+				paintMark();
+				mark.classList.add('is-visible');
+				buildSwatches();
+				labelEl.textContent = current().name;
+				tools[0]?.classList.add('is-active');
+				return;
+			}
+			if (phase === 0) phase = 1;
+			timer = window.setTimeout(step, 24);
+		};
+
+		const pause = () => {
+			stop();
+			if (toolTimer !== undefined) {
+				window.clearInterval(toolTimer);
+				toolTimer = undefined;
+			}
+		};
+
+		host.addEventListener('mouseenter', start);
+		host.addEventListener('mouseleave', pause);
+		host.addEventListener('focus', start);
+		host.addEventListener('blur', pause);
+	}
+
+	// Corporate Merchandising panel: each product is hand-drawn once on
+	// load (gradients, shading, soft shadows) — the same drawing
+	// techniques as the homepage hero's 3D scene — rather than a flat
+	// icon glyph. It's a static illustration, so there's nothing to
+	// animate here beyond the CSS reveal/steam already in place.
+	const LOGICAL_ICON_SIZE = 64;
+
+	// The canvas also grows (via CSS) once the panel expands on hover, so
+	// a one-time draw would get blurrily upscaled. A ResizeObserver
+	// redraws it at the current size whenever that changes — the same
+	// technique the homepage hero canvas uses for its own resize/render.
+	const renderMerchCanvas = (canvas: HTMLCanvasElement, size: number, drawer: (ctx: CanvasRenderingContext2D) => void) => {
+		if (size <= 0) return;
+		const density = Math.min(window.devicePixelRatio || 1, 2);
+		canvas.width = Math.round(size * density);
+		canvas.height = Math.round(size * density);
+		const ctx = canvas.getContext('2d');
+		if (!ctx) return;
+		ctx.setTransform(density, 0, 0, density, 0, 0);
+		ctx.scale(size / LOGICAL_ICON_SIZE, size / LOGICAL_ICON_SIZE);
+		drawer(ctx);
+	};
+
+	const drawMerchMug = (ctx: CanvasRenderingContext2D) => {
+		ctx.save();
+		ctx.shadowColor = 'rgba(45, 63, 174, 0.35)';
+		ctx.shadowBlur = 10;
+		ctx.shadowOffsetY = 6;
+		const body = new Path2D();
+		body.moveTo(18, 20);
+		body.lineTo(46, 20);
+		body.lineTo(43, 50);
+		body.quadraticCurveTo(43, 54, 39, 54);
+		body.lineTo(25, 54);
+		body.quadraticCurveTo(21, 54, 21, 50);
+		body.closePath();
+		const gradient = ctx.createLinearGradient(18, 20, 46, 54);
+		gradient.addColorStop(0, '#5f7bf0');
+		gradient.addColorStop(1, '#283aa8');
+		ctx.fillStyle = gradient;
+		ctx.fill(body);
+		ctx.restore();
+
+		// Glossy highlight, like an inflated 3D toy material rather than a
+		// flat fill.
+		ctx.save();
+		ctx.clip(body);
+		const gloss = ctx.createRadialGradient(27, 27, 1, 27, 27, 14);
+		gloss.addColorStop(0, 'rgba(255, 255, 255, 0.5)');
+		gloss.addColorStop(1, 'rgba(255, 255, 255, 0)');
+		ctx.fillStyle = gloss;
+		ctx.fillRect(0, 0, 64, 64);
+		ctx.restore();
+
+		ctx.save();
+		ctx.strokeStyle = '#283aa8';
+		ctx.lineWidth = 3.4;
+		ctx.beginPath();
+		ctx.arc(47, 33, 7, -Math.PI / 2 - 0.3, Math.PI / 2 + 0.3);
+		ctx.stroke();
+		ctx.restore();
+
+		ctx.save();
+		ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+		ctx.lineWidth = 1.4;
+		ctx.beginPath();
+		ctx.moveTo(20, 21);
+		ctx.lineTo(44, 21);
+		ctx.stroke();
+		ctx.restore();
+
+		ctx.save();
+		ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+		ctx.beginPath();
+		ctx.arc(32, 36, 3.6, 0, Math.PI * 2);
+		ctx.fill();
+		ctx.restore();
+	};
+
+	const drawMerchBottle = (ctx: CanvasRenderingContext2D) => {
+		ctx.save();
+		ctx.shadowColor = 'rgba(31, 111, 100, 0.3)';
+		ctx.shadowBlur = 10;
+		ctx.shadowOffsetY = 6;
+		const body = new Path2D();
+		body.moveTo(22, 24);
+		body.lineTo(42, 24);
+		body.lineTo(42, 54);
+		body.quadraticCurveTo(42, 58, 38, 58);
+		body.lineTo(26, 58);
+		body.quadraticCurveTo(22, 58, 22, 54);
+		body.closePath();
+		const gradient = ctx.createLinearGradient(22, 24, 42, 58);
+		gradient.addColorStop(0, '#6fe0cf');
+		gradient.addColorStop(0.55, '#2f9e8f');
+		gradient.addColorStop(1, '#1f6f64');
+		ctx.fillStyle = gradient;
+		ctx.fill(body);
+		ctx.restore();
+
+		ctx.save();
+		ctx.clip(body);
+		const gloss = ctx.createRadialGradient(29, 32, 1, 29, 32, 15);
+		gloss.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
+		gloss.addColorStop(1, 'rgba(255, 255, 255, 0)');
+		ctx.fillStyle = gloss;
+		ctx.fillRect(0, 0, 64, 64);
+		ctx.restore();
+
+		ctx.save();
+		const capGradient = ctx.createLinearGradient(26, 8, 38, 24);
+		capGradient.addColorStop(0, '#7b8794');
+		capGradient.addColorStop(1, '#374151');
+		ctx.fillStyle = capGradient;
+		ctx.beginPath();
+		ctx.moveTo(28, 24);
+		ctx.lineTo(28, 16);
+		ctx.quadraticCurveTo(28, 14, 30, 14);
+		ctx.lineTo(34, 14);
+		ctx.quadraticCurveTo(36, 14, 36, 16);
+		ctx.lineTo(36, 24);
+		ctx.closePath();
+		ctx.fill();
+		ctx.restore();
+
+		ctx.save();
+		const shine = ctx.createLinearGradient(25, 26, 25, 48);
+		shine.addColorStop(0, 'rgba(255, 255, 255, 0.55)');
+		shine.addColorStop(1, 'rgba(255, 255, 255, 0)');
+		ctx.fillStyle = shine;
+		ctx.beginPath();
+		ctx.ellipse(26, 37, 1.6, 11, 0, 0, Math.PI * 2);
+		ctx.fill();
+		ctx.restore();
+
+		ctx.save();
+		ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+		ctx.fillRect(22, 38, 20, 4.5);
+		ctx.restore();
+	};
+
+	const drawMerchShirt = (ctx: CanvasRenderingContext2D) => {
+		ctx.save();
+		ctx.shadowColor = 'rgba(0, 0, 0, 0.18)';
+		ctx.shadowBlur = 10;
+		ctx.shadowOffsetY = 6;
+		const body = new Path2D();
+		body.moveTo(26, 10);
+		body.quadraticCurveTo(20, 6, 15, 7);
+		body.quadraticCurveTo(7, 10, 3, 17);
+		body.quadraticCurveTo(1, 21, 4, 24);
+		body.quadraticCurveTo(9, 22, 13, 19);
+		body.lineTo(13, 54);
+		body.quadraticCurveTo(13, 57, 16, 57);
+		body.lineTo(48, 57);
+		body.quadraticCurveTo(51, 57, 51, 54);
+		body.lineTo(51, 19);
+		body.quadraticCurveTo(55, 22, 60, 24);
+		body.quadraticCurveTo(63, 21, 61, 17);
+		body.quadraticCurveTo(57, 10, 49, 7);
+		body.quadraticCurveTo(44, 6, 38, 10);
+		body.quadraticCurveTo(32, 14, 26, 10);
+		body.closePath();
+		const gradient = ctx.createLinearGradient(10, 6, 54, 57);
+		gradient.addColorStop(0, '#f6d394');
+		gradient.addColorStop(1, '#d9a24e');
+		ctx.fillStyle = gradient;
+		ctx.fill(body);
+		ctx.restore();
+
+		ctx.save();
+		ctx.clip(body);
+		const fold = ctx.createLinearGradient(32, 10, 32, 57);
+		fold.addColorStop(0, 'rgba(0, 0, 0, 0)');
+		fold.addColorStop(1, 'rgba(0, 0, 0, 0.12)');
+		ctx.fillStyle = fold;
+		ctx.fillRect(0, 0, 64, 64);
+		const gloss = ctx.createRadialGradient(22, 16, 1, 22, 16, 16);
+		gloss.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
+		gloss.addColorStop(1, 'rgba(255, 255, 255, 0)');
+		ctx.fillStyle = gloss;
+		ctx.fillRect(0, 0, 64, 64);
+		ctx.restore();
+
+		ctx.save();
+		ctx.strokeStyle = 'rgba(0, 0, 0, 0.18)';
+		ctx.lineWidth = 1.6;
+		ctx.beginPath();
+		ctx.moveTo(26, 10);
+		ctx.quadraticCurveTo(32, 15, 38, 10);
+		ctx.stroke();
+		ctx.restore();
+
+		ctx.save();
+		ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+		ctx.beginPath();
+		ctx.arc(32, 24, 3.2, 0, Math.PI * 2);
+		ctx.fill();
+		ctx.restore();
+	};
+
+	const merchDrawers: Record<string, (ctx: CanvasRenderingContext2D) => void> = {
+		mug: drawMerchMug,
+		bottle: drawMerchBottle,
+		shirt: drawMerchShirt,
+	};
+
+	for (const canvas of document.querySelectorAll<HTMLCanvasElement>('[data-merch-icon]')) {
+		const kind = canvas.dataset.merchIcon ?? '';
+		const drawer = merchDrawers[kind];
+		if (!drawer) continue;
+		const observer = new ResizeObserver((entries) => {
+			const width = entries[0]?.contentRect.width ?? canvas.getBoundingClientRect().width;
+			renderMerchCanvas(canvas, width, drawer);
+		});
+		observer.observe(canvas);
+	}
+</script>
+

@@ -1,14 +1,16 @@
 import type { AstroComponent } from '@lucide/astro';
-import Code from '@lucide/astro/icons/code';
-import Headset from '@lucide/astro/icons/headset';
-import Gift from '@lucide/astro/icons/gift';
+import Globe from '@lucide/astro/icons/globe';
+import Bot from '@lucide/astro/icons/bot';
+import Search from '@lucide/astro/icons/search';
+import Megaphone from '@lucide/astro/icons/megaphone';
 import PenTool from '@lucide/astro/icons/pen-tool';
-import Printer from '@lucide/astro/icons/printer';
-import Package from '@lucide/astro/icons/package';
+import Gift from '@lucide/astro/icons/gift';
 
 export interface Service {
 	slug: string;
+	tag: string;
 	title: string;
+	blurb: string;
 	summary: string;
 	points: string[];
 	icon: AstroComponent;
@@ -22,75 +24,88 @@ export interface ServiceCategory {
 	services: Service[];
 }
 
-// Grouped per the homepage structure: Technology, Creative & Brand, and
-// Print & Packaging solutions. Each category pairs two of the six services.
+// Grouped per the homepage structure: Technology, Visibility & Marketing, and
+// Design & Merchandise. Each category pairs two of the six services.
 export const serviceCategories: ServiceCategory[] = [
 	{
 		id: 'technology',
-		label: 'WEB & SOFTWARE',
-		title: 'Software and IT built for how you operate',
+		label: 'WEBSITE & AI',
+		title: 'Websites and AI built for how you operate',
 		description:
-			'From custom applications to day-to-day infrastructure support, we build and maintain the technology your business runs on.',
+			'From the site your customers see to the AI tools running behind the scenes, we build the technology your business runs on.',
 		services: [
 			{
-				slug: 'software-development',
-				title: 'Software Development',
-				summary: 'Custom web, mobile, and internal applications engineered for reliability and scale.',
-				points: ['Web & mobile applications', 'Internal tools & integrations', 'Ongoing maintenance & support'],
-				icon: Code,
+				slug: 'website',
+				tag: 'Website',
+				title: 'Website',
+				blurb: 'Fast, modern sites built to convert visitors',
+				summary: 'Custom-designed websites built for performance, credibility, and converting visitors into leads.',
+				points: ['Custom design & development', 'Mobile-first & fast-loading', 'Ongoing maintenance & support'],
+				icon: Globe,
 			},
 			{
-				slug: 'it-support',
-				title: 'IT Support & Services',
-				summary: 'Responsive managed IT support that keeps your teams productive and your systems secure.',
-				points: ['Help desk & managed support', 'Network & infrastructure', 'Security & systems monitoring'],
-				icon: Headset,
+				slug: 'ai-integration',
+				tag: 'AI',
+				title: 'AI Integration',
+				blurb: 'Practical AI built into how you already work',
+				summary: 'AI-powered chatbots, automation, and workflow tools built around your existing processes.',
+				points: ['Chatbots & virtual assistants', 'Workflow automation', 'Custom AI integrations'],
+				icon: Bot,
+			},
+		],
+	},
+	{
+		id: 'marketing',
+		label: 'SEO & MARKETING',
+		title: 'Visibility and marketing that drive real growth',
+		description:
+			'We help you get found and stay top of mind — from search rankings to the campaigns that turn attention into customers.',
+		services: [
+			{
+				slug: 'seo-aeo',
+				tag: 'SEO & AEO',
+				title: 'SEO & AEO',
+				blurb: 'Get found in search results and AI answers',
+				summary:
+					'Search engine optimization paired with AEO — Answer & Generative Engine Optimization — so you show up in both search results and AI answers like ChatGPT and Google AI Overviews.',
+				points: ['Technical & on-page SEO', 'AI/answer engine optimization (AEO/GEO)', 'Ongoing rank & visibility tracking'],
+				icon: Search,
+			},
+			{
+				slug: 'digital-marketing',
+				tag: 'Marketing',
+				title: 'Digital Marketing',
+				blurb: 'Campaigns that turn attention into customers',
+				summary: 'Paid and organic marketing campaigns designed to build awareness and drive measurable growth.',
+				points: ['Paid social & search campaigns', 'Content & email marketing', 'Performance tracking & reporting'],
+				icon: Megaphone,
 			},
 		],
 	},
 	{
 		id: 'creative',
-		label: 'BRAND & MERCHANDISE',
-		title: 'Branded merchandise and design that represent you well',
+		label: 'DESIGN & MERCHANDISE',
+		title: 'Branded design and merchandise that represent you well',
 		description:
-			'We help you look the part everywhere your brand shows up — from promotional merchandise to the visual identity behind it.',
+			'We help you look the part everywhere your brand shows up — from printed collateral to promotional merchandise.',
 		services: [
 			{
-				slug: 'corporate-merchandise',
-				title: 'Corporate Merchandise',
+				slug: 'graphic-design-printing',
+				tag: 'Design',
+				title: 'Graphic Design & Printing',
+				blurb: 'Brand identity, produced to a premium standard',
+				summary: 'Brand identity, marketing collateral, and commercial printing finished to a premium standard.',
+				points: ['Brand identity & guidelines', 'Marketing collateral & signage', 'Commercial & large-format printing'],
+				icon: PenTool,
+			},
+			{
+				slug: 'corporate-merchandising',
+				tag: 'Merchandise',
+				title: 'Corporate Merchandising',
+				blurb: 'Branded gear, sourced and delivered at scale',
 				summary: 'Branded apparel and promotional products sourced, decorated, and delivered at scale.',
 				points: ['Branded apparel & gifts', 'Bulk sourcing & fulfilment', 'Event & onboarding kits'],
 				icon: Gift,
-			},
-			{
-				slug: 'graphic-design',
-				title: 'Graphic Design',
-				summary: 'Brand identity, marketing collateral, and visual design that stays consistent everywhere.',
-				points: ['Brand identity & guidelines', 'Marketing collateral', 'Digital & print-ready artwork'],
-				icon: PenTool,
-			},
-		],
-	},
-	{
-		id: 'print-packaging',
-		label: 'SOCIAL MEDIA & PRINT',
-		title: 'Print and packaging finished to a premium standard',
-		description:
-			'High-quality production for everything from business collateral to retail-ready packaging — on time and to spec.',
-		services: [
-			{
-				slug: 'printing-services',
-				title: 'Printing Services',
-				summary: 'Commercial printing for business collateral, signage, and large-format materials.',
-				points: ['Business & marketing collateral', 'Large-format & signage', 'Fast, reliable turnaround'],
-				icon: Printer,
-			},
-			{
-				slug: 'packaging-solutions',
-				title: 'Packaging Solutions',
-				summary: 'Custom structural and retail packaging designed to protect and present your product.',
-				points: ['Custom structural design', 'Retail-ready packaging', 'Sustainable material options'],
-				icon: Package,
 			},
 		],
 	},

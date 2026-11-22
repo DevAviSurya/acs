@@ -32,8 +32,8 @@ const eyebrow = serviceCategories.map((category) => category.label).join(' · ')
 
 <section class="attribute-hero-intro">
   <p class="attribute-hero-description">
-    From the software that runs your business to the merchandise, print, and packaging that represent it —
-    we design, build, and deliver all of it under one roof.
+    From the website and AI tools that run your business to the marketing, design, and merchandise that
+    represent it — we design, build, and deliver all of it under one roof.
   </p>
   <div class="attribute-hero-actions">
     <a class="attribute-hero-action attribute-hero-action-primary" href={startProjectHref}>
@@ -799,7 +799,7 @@ const eyebrow = serviceCategories.map((category) => category.label).join(' · ')
       return;
     }
 
-    // A VS Code-style editor shows the AI agent building the output.
+    // A VS Code-style editor shows website & web application code being written.
     sheet(...panelBounds.agent, '#000');
     rect(-1.36, -0.88, 2.72, 0.22, '#131313');
     rect(-1.36, -0.66, 0.31, 1.49, '#141414');
@@ -813,10 +813,10 @@ const eyebrow = serviceCategories.map((category) => category.label).join(' · ')
     for (const z of [-0.18, 0.02, 0.22, 0.42]) rect(-1.24, z, 0.081, 0.047, '#9b9b9b');
 
     const code = [
-      'import { agent } from "./ai";',
+      'import { Website } from "./site";',
       '',
-      'const draft = await agent.run();',
-      'await app.publish(draft);',
+      'const site = new Website();',
+      'site.render();',
     ];
     const typedCharacters = Math.floor(progress * (code[2].length + code[3].length));
     inPlane(-0.95, -0.54, 0.010, () => {
@@ -824,7 +824,7 @@ const eyebrow = serviceCategories.map((category) => category.label).join(' · ')
       context.textBaseline = 'top';
       context.textAlign = 'left';
       context.fillStyle = '#e8e8e8';
-      context.fillText('agent.ts', 0, -8);
+      context.fillText('website.ts', 0, -8);
       let remaining = typedCharacters;
       let cursorX = 0;
       let cursorY = 49;

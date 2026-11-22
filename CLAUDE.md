@@ -5,12 +5,12 @@ Build a premium, modern corporate website for
 Attribute Corporate Solutions.
 
 The website showcases six services:
-1. Software Development
-2. IT Support & Services
-3. Corporate Merchandise
-4. Graphic Design
-5. Printing Services
-6. Packaging Solutions
+1. Website
+2. AI Integration
+3. SEO & AEO
+4. Digital Marketing
+5. Graphic Design & Printing
+6. Corporate Merchandising
 
 Primary goal:
 Establish corporate credibility, showcase capabilities,
@@ -69,13 +69,12 @@ Brand colours (provisional):
 1. Header and navigation
 2. Cinematic video hero
 3. Company introduction
-4. Technology Solutions
-5. Creative & Brand Solutions
-6. Print & Packaging Solutions
-7. Featured projects
-8. Why Choose Attribute
-9. Contact / Request a Quote
-10. Footer
+4. Industries served
+5. Services
+6. Featured projects
+7. Why Choose Attribute
+8. Contact / Request a Quote
+9. Footer
 
 ## Coding Standards
 - Use TypeScript where applicable.
