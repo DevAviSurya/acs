@@ -136,3 +136,24 @@ Hosting: GoDaddy cPanel
 8. Run available validation and build commands.
 9. Report errors instead of hiding them.
 10. Do not deploy or modify production without approval.
+
+
+## 3D Rendering and Animation Standards
+
+- Use Three.js for 3D rendering, realistic materials, lighting and camera management.
+- Use GSAP for animation sequencing and transformations.
+- Use GSAP ScrollTrigger for scroll-driven animations, viewport pinning and release.
+- Use Lenis for smooth scrolling.
+- Refer to installed GSAP and Lenis skills when implementing animations.
+- Maintain a single global Lenis instance.
+- Use one coordinated animation rendering loop.
+- Separate 3D rendering, animation logic and UI components.
+- Prefer reusable, modular TypeScript implementations.
+- Ensure animations are reversible and synchronized with scroll progress.
+- Never manually intercept scrolling to pin a section.
+- Maintain premium, minimalist, Apple-inspired design quality.
+- Optimize GPU usage, asset sizes and rendering performance.
+- Support responsive layouts and reduced-motion preferences.
+- Provide fallbacks for devices without WebGL support.
+- Do not introduce React or additional animation libraries without approval.
+- Preserve existing components and functionality unless explicitly requested to change them.

@@ -1,0 +1,275 @@
+---
+import { allServices } from '../../data/services';
+
+interface Props {
+	startProjectHref?: string;
+	workHref?: string;
+}
+
+const { startProjectHref = '/contact', workHref = '/portfolio' } = Astro.props;
+
+const eyebrow = allServices.map((service) => service.tag).join(' · ');
+---
+
+<section class="apple-hero">
+	<div class="apple-hero-heading-block">
+		<p class="apple-hero-eyebrow">{eyebrow}</p>
+		<h1 class="apple-hero-heading">
+			Built in code.
+			<span>Made for the real world.</span>
+		</h1>
+		<p class="apple-hero-description">
+			From the website and AI tools that run your business to the marketing, design, and merchandise that
+			represent it — we design, build, and deliver all of it under one roof.
+		</p>
+		<div class="apple-hero-actions">
+			<a class="apple-hero-action apple-hero-action-primary" href={startProjectHref}>
+				Start a project <span aria-hidden="true">↗</span>
+			</a>
+			<a class="apple-hero-action" href={workHref}>
+				Explore our work <span aria-hidden="true">↗</span>
+			</a>
+		</div>
+	</div>
+
+	<apple-computer-stage class="apple-stage">
+		<canvas class="apple-stage-canvas" aria-label="A rotating 3D desktop computer revealing Attribute's six services on cards" hidden></canvas>
+		<ul class="apple-stage-fallback">
+			{allServices.map((service) => (
+				<li class="apple-stage-fallback-card">
+					<service.icon aria-hidden="true" />
+					<h3>{service.title}</h3>
+					<p>{service.blurb}</p>
+				</li>
+			))}
+		</ul>
+	</apple-computer-stage>
+</section>
+
+<style>
+	.apple-hero {
+		position: relative;
+		display: flex;
+		min-height: 100vh;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.apple-hero-heading-block {
+		box-sizing: border-box;
+		width: 100%;
+		max-width: 1280px;
+		margin-inline: auto;
+		padding: clamp(5.5rem, 10vw, 7.5rem) 1.25rem 0;
+		text-align: center;
+		flex: 0 0 auto;
+	}
+
+	.apple-hero-eyebrow {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		margin: 0 0 clamp(0.75rem, 1.8vw, 1.5rem);
+		color: var(--color-brand-muted);
+		font-size: clamp(0.56rem, 0.85vw, 0.7rem);
+		font-weight: 700;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+	}
+
+	.apple-hero-heading {
+		margin: 0;
+		font-size: clamp(1.75rem, 5vw, 4.5rem);
+		font-weight: 750;
+		line-height: 1.08;
+		letter-spacing: -0.03em;
+	}
+
+	.apple-hero-heading span {
+		display: block;
+		margin-top: 0.08em;
+		color: var(--color-brand-muted);
+		text-wrap: balance;
+	}
+
+	.apple-hero-description {
+		max-width: 37rem;
+		margin: clamp(1rem, 2vw, 1.5rem) auto 0;
+		font-size: clamp(0.95rem, 1.6vw, 1.25rem);
+		line-height: 1.65;
+		text-wrap: balance;
+	}
+
+	.apple-hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.65rem;
+		margin-top: clamp(1.35rem, 2.65vw, 2.5rem);
+	}
+
+	.apple-hero-action {
+		display: inline-flex;
+		min-height: 2.85rem;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		padding: 0.35rem clamp(1rem, 2vw, 1.55rem);
+		border: 1px solid var(--color-brand-border);
+		border-radius: 999px;
+		background: var(--color-brand-bg);
+		color: var(--color-brand-foreground);
+		font-size: 0.92rem;
+		font-weight: 650;
+		text-decoration: none;
+		transition: opacity 0.2s ease, background-color 0.2s ease;
+	}
+
+	.apple-hero-action:hover {
+		background: var(--color-brand-surface);
+	}
+
+	.apple-hero-action-primary {
+		border-color: var(--color-brand-accent);
+		background: var(--color-brand-accent);
+		color: var(--color-brand-accent-foreground);
+	}
+
+	.apple-hero-action-primary:hover {
+		background: var(--color-brand-accent);
+		opacity: 0.9;
+	}
+
+	.apple-hero-action:focus-visible {
+		outline: 2px solid var(--color-brand-foreground);
+		outline-offset: 4px;
+	}
+
+	.apple-hero-action span {
+		line-height: 1;
+	}
+
+	.apple-stage {
+		position: relative;
+		display: block;
+		flex: 1 1 auto;
+		min-height: 55vh;
+		width: 100%;
+	}
+
+	.apple-stage-canvas {
+		position: absolute;
+		inset: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.apple-stage-fallback {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: 1rem;
+		max-width: 1280px;
+		margin: clamp(2rem, 4vw, 3.5rem) auto;
+		padding: 0 1.25rem;
+		list-style: none;
+	}
+
+	.apple-stage-fallback-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.65rem;
+		padding: 1.5rem;
+		border: 1px solid var(--color-brand-border);
+		border-radius: 1rem;
+		background: var(--color-brand-surface);
+	}
+
+	.apple-stage-fallback-card :global(svg) {
+		width: 1.75rem;
+		height: 1.75rem;
+		color: var(--color-brand-accent);
+	}
+
+	.apple-stage-fallback-card h3 {
+		margin: 0;
+		font-size: 1.05rem;
+		font-weight: 700;
+	}
+
+	.apple-stage-fallback-card p {
+		margin: 0;
+		color: var(--color-brand-muted);
+		font-size: 0.92rem;
+		line-height: 1.5;
+	}
+
+	@media (max-width: 759px) {
+		.apple-hero {
+			min-height: auto;
+		}
+
+		.apple-stage {
+			min-height: 70vh;
+		}
+	}
+</style>
+
+<script>
+	class AppleComputerStage extends HTMLElement {
+		private cleanup?: () => void;
+
+		connectedCallback() {
+			const canvas = this.querySelector<HTMLCanvasElement>('.apple-stage-canvas');
+			const fallback = this.querySelector<HTMLElement>('.apple-stage-fallback');
+			const section = this.closest<HTMLElement>('.apple-hero');
+			if (!canvas || !fallback || !section) return;
+
+			const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const supportsWebGL = (() => {
+				try {
+					return !!(window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl')));
+				} catch {
+					return false;
+				}
+			})();
+
+			if (prefersReducedMotion || !supportsWebGL) return;
+
+			fallback.setAttribute('hidden', '');
+			canvas.removeAttribute('hidden');
+
+			// Wait for the window's load event before creating the pinned
+			// ScrollTrigger: GSAP schedules its own refresh on "load", and
+			// racing a brand-new pin against that can throw inside GSAP's pin
+			// bookkeeping. Starting after load avoids the race entirely.
+			const whenLoaded =
+				document.readyState === 'complete'
+					? Promise.resolve()
+					: new Promise<void>((resolve) => window.addEventListener('load', () => resolve(), { once: true }));
+
+			whenLoaded
+				.then(() => import('../../scripts/apple-computer-scene'))
+				.then(({ initAppleComputerScene }) => {
+					this.cleanup = initAppleComputerScene({ section, stage: this, canvas });
+				})
+				.catch(() => {
+					fallback.removeAttribute('hidden');
+					canvas.setAttribute('hidden', '');
+				});
+		}
+
+		disconnectedCallback() {
+			// Killing the ScrollTrigger reverts its pin, which mutates this
+			// element's surrounding DOM and can re-trigger disconnectedCallback
+			// synchronously — clear `cleanup` first so that reentrant call is a
+			// no-op instead of recursing into scrollTrigger.kill() again.
+			const cleanup = this.cleanup;
+			this.cleanup = undefined;
+			cleanup?.();
+		}
+	}
+
+	customElements.define('apple-computer-stage', AppleComputerStage);
+</script>

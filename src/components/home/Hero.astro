@@ -1,0 +1,831 @@
+---
+import ArrowUp from '@lucide/astro/icons/arrow-up';
+import Globe from '@lucide/astro/icons/globe';
+import Bot from '@lucide/astro/icons/bot';
+import Share2 from '@lucide/astro/icons/share-2';
+import Palette from '@lucide/astro/icons/palette';
+import Volume2 from '@lucide/astro/icons/volume-2';
+import VolumeX from '@lucide/astro/icons/volume-x';
+import { allServices } from '../../data/services';
+
+interface Props {
+	startProjectHref?: string;
+}
+
+const { startProjectHref = '/contact' } = Astro.props;
+
+// Built here at build time, where importing allServices (and the Lucide icon
+// components it carries) is free — only this plain, serializable summary
+// ships to the browser, instead of the client script importing allServices
+// itself and dragging all six icon components into the bundle unused.
+const serviceSummaries = allServices.map(({ slug, title, tag, blurb }) => ({ slug, title, tag, blurb }));
+
+const chips = [
+	{ label: 'Website & Apps', prompt: 'I want to build a website for my business.', services: ['website'], icon: Globe },
+	{ label: 'AI Integration', prompt: 'I want to automate my business with AI.', services: ['ai-integration'], icon: Bot },
+	{ label: 'Social Media', prompt: 'I want to grow my social media presence.', services: ['digital-marketing'], icon: Share2 },
+	{
+		label: 'Branding & Merchandise',
+		prompt: 'I want to create a memorable brand identity.',
+		services: ['graphic-design-printing', 'corporate-merchandising'],
+		icon: Palette,
+	},
+];
+
+const examplePrompts = [
+	"I want to build a website for my business.",
+	"I want to develop a mobile application.",
+	"I want to automate my business with AI.",
+	"I want to grow my social media presence.",
+	"I want to create a memorable brand identity.",
+];
+---
+
+<section class="hero">
+	<canvas class="hero-grid" aria-hidden="true"></canvas>
+
+	<div class="hero-inner">
+		<h1 class="hero-heading">You imagine. We create.</h1>
+		<p class="hero-subheading">
+			From digital products to brand experiences. Tell us your idea. We'll bring it to life.
+		</p>
+
+		<form class="hero-prompt" action={startProjectHref} method="get">
+			<label for="hero-prompt-input" class="sr-only">Describe what you want to build</label>
+			<div class="hero-prompt-field">
+				<textarea id="hero-prompt-input" name="brief" class="hero-prompt-input" rows="2"></textarea>
+				<div class="hero-prompt-placeholder" aria-hidden="true">
+					<span class="hero-prompt-placeholder-text">{examplePrompts[0]}</span><span class="hero-prompt-cursor"></span>
+				</div>
+				<button
+					type="button"
+					class="hero-sound-toggle"
+					data-sound-toggle
+					aria-pressed="false"
+					aria-label="Enable keyboard typing sound"
+				>
+					<VolumeX aria-hidden="true" class="hero-sound-icon hero-sound-icon-off" stroke-width={1.75} />
+					<Volume2 aria-hidden="true" class="hero-sound-icon hero-sound-icon-on" stroke-width={1.75} />
+				</button>
+			</div>
+			<button type="submit" class="hero-prompt-submit" aria-label="Start your project">
+				<ArrowUp aria-hidden="true" class="hero-prompt-submit-icon" />
+			</button>
+		</form>
+
+		<div class="hero-chips" role="group" aria-label="Service focus">
+			{chips.map((chip) => (
+				<button
+					type="button"
+					class="hero-chip"
+					data-prompt={chip.prompt}
+					data-services={chip.services.join(',')}
+					aria-pressed="false"
+				>
+					<chip.icon class="hero-chip-icon" aria-hidden="true" stroke-width={1.5} />
+					{chip.label}
+				</button>
+			))}
+		</div>
+
+		<div class="hero-service-choices" data-service-choices hidden>
+			<p class="hero-service-choices-label">Which service fits best?</p>
+			<div class="hero-service-choices-list" data-service-choices-list></div>
+			<a href="/contact" class="hero-service-choices-contact">Not sure? Talk to us →</a>
+		</div>
+	</div>
+
+	<script type="application/json" id="hero-service-data" set:html={JSON.stringify(serviceSummaries)} />
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		width: 100%;
+		overflow: hidden;
+		/* background: var(--color-brand-surface); */
+	}
+
+	/* The grid + mouse-ripple animation itself is drawn by
+	   src/scripts/hero-grid-ripple.ts (ported from ConnectedHero-hover's
+	   floor-grid sub-system); this just positions the canvas as a
+	   non-interactive layer behind .hero-inner. */
+	.hero-grid {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+
+	.hero-inner {
+		position: relative;
+		z-index: 1;
+		box-sizing: border-box;
+		width: 100%;
+		max-width: 1280px;
+		margin-inline: auto;
+		padding: clamp(6rem, 16vw, 10rem) 1.5rem clamp(4rem, 8vw, 6rem);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.hero-heading {
+		margin: 0;
+		font-size: clamp(2.5rem, 6.5vw, 5.25rem);
+		font-weight: 700;
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+		color: var(--color-brand-foreground);
+	}
+
+	.hero-subheading {
+		max-width: 38rem;
+		margin: clamp(1.25rem, 2.5vw, 1.75rem) 0 0;
+		font-size: clamp(1rem, 1.5vw, 1.25rem);
+		line-height: 1.6;
+		color: var(--color-brand-muted);
+		text-wrap: balance;
+	}
+
+	.hero-prompt {
+		display: flex;
+		align-items: flex-end;
+		gap: 0.75rem;
+		width: 100%;
+		max-width: 42rem;
+		margin-top: clamp(2.5rem, 5vw, 3.5rem);
+		padding: 1.05rem 0.75rem 1.05rem 1.5rem;
+		border: 1px solid var(--color-brand-border);
+		border-radius: 1.75rem;
+		background: var(--color-brand-bg);
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px -16px rgba(0, 0, 0, 0.08);
+		transition: box-shadow 0.2s ease;
+		background-color: var(--color-brand-bg);
+	}
+
+	.hero-prompt:focus-within {
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 16px 36px -16px rgba(0, 0, 0, 0.12);
+	}
+
+	.hero-prompt-field {
+		position: relative;
+		flex: 1 1 auto;
+	}
+
+	.hero-prompt-input {
+		display: block;
+		width: 100%;
+		resize: none;
+		border: none;
+		outline: none;
+		background: transparent;
+		font-family: inherit;
+		font-size: 1.05rem;
+		line-height: 1.5;
+		color: var(--color-brand-foreground);
+		padding: 0.65rem 0 1.85rem;
+	}
+
+	.hero-prompt-placeholder {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: flex-start;
+		padding: 0.65rem 0 1.85rem;
+		font-size: 1.05rem;
+		line-height: 1.5;
+		color: var(--color-brand-muted);
+		white-space: pre-wrap;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	/* Keyboard-sound toggle: bottom-left corner of the input box, below the
+	   last text line (the extra bottom padding above clears space for it). */
+	.hero-sound-toggle {
+		position: absolute;
+		left: 0;
+		bottom: 0.1rem;
+		z-index: 2;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		border: none;
+		border-radius: 999px;
+		background: transparent;
+		color: var(--color-brand-muted);
+		cursor: pointer;
+		transition: color 0.2s ease, background-color 0.2s ease;
+	}
+
+	.hero-sound-toggle:hover {
+		background: var(--color-brand-surface);
+		color: var(--color-brand-foreground);
+	}
+
+	.hero-sound-toggle:focus-visible {
+		outline: 2px solid var(--color-brand-foreground);
+		outline-offset: 2px;
+	}
+
+	.hero-sound-icon {
+		width: 1rem;
+		height: 1rem;
+	}
+
+	.hero-sound-icon-on {
+		display: none;
+	}
+
+	.hero-sound-toggle[aria-pressed='true'] .hero-sound-icon-off {
+		display: none;
+	}
+
+	.hero-sound-toggle[aria-pressed='true'] .hero-sound-icon-on {
+		display: block;
+	}
+
+	.hero-prompt-cursor {
+		display: inline-block;
+		width: 1px;
+		height: 1.2em;
+		margin-left: 1px;
+		background: currentColor;
+		animation: hero-cursor-blink 1s steps(1) infinite;
+	}
+
+	@keyframes hero-cursor-blink {
+		0%,
+		49% {
+			opacity: 1;
+		}
+		50%,
+		100% {
+			opacity: 0;
+		}
+	}
+
+	.hero-prompt-submit {
+		position: relative;
+		overflow: hidden;
+		flex: 0 0 auto;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		border: none;
+		border-radius: 999px;
+		background: var(--color-brand-accent);
+		color: var(--color-brand-accent-foreground);
+		cursor: pointer;
+		transition: opacity 0.2s ease;
+	}
+
+	.hero-prompt-submit:hover {
+		opacity: 0.9;
+	}
+
+	.hero-prompt-submit:focus-visible {
+		outline: 2px solid var(--color-brand-foreground);
+		outline-offset: 3px;
+	}
+
+	.hero-prompt-submit-icon {
+		position: relative;
+		width: 1.25rem;
+		height: 1.25rem;
+	}
+
+	.hero-chips {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.65rem;
+		margin-top: clamp(1.5rem, 3vw, 2rem);
+	}
+
+	.hero-chip {
+		position: relative;
+		overflow: hidden;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.55rem 1.1rem;
+		border: 1px solid var(--color-brand-border);
+		border-radius: 999px;
+		background: var(--color-brand-bg);
+		color: var(--color-brand-foreground);
+		font-size: 0.875rem;
+		font-weight: 500;
+		text-decoration: none;
+		cursor: pointer;
+		transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+	}
+
+	.hero-chip-icon {
+		width: 0.95rem;
+		height: 0.95rem;
+		flex: none;
+	}
+
+	.hero-chip:hover {
+		background: var(--color-brand-surface);
+		border-color: var(--color-brand-foreground);
+		transform: translateY(-1px);
+	}
+
+	.hero-chip:focus-visible {
+		outline: 2px solid var(--color-brand-foreground);
+		outline-offset: 2px;
+	}
+
+	/* The same glow-bubble recipe as the circuit-pulse glow in
+	   ConnectedHero-hover.astro (a soft radial glow plus a small bright
+	   core), repositioned on every pointermove and revealed on hover/focus
+	   instead of traveling along a path. See the script below. */
+	.hero-chip::before,
+	.hero-prompt-submit::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		opacity: 0;
+		background:
+			radial-gradient(circle 4px at var(--glow-x, 50%) var(--glow-y, 50%), rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 60%, rgba(255, 255, 255, 0) 61%),
+			radial-gradient(circle 22px at var(--glow-x, 50%) var(--glow-y, 50%), rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.32) 42%, rgba(255, 255, 255, 0) 100%);
+		transition: opacity 0.25s ease;
+	}
+
+	.hero-chip:hover::before,
+	.hero-chip:focus-visible::before,
+	.hero-prompt-submit:hover::before,
+	.hero-prompt-submit:focus-visible::before {
+		opacity: 1;
+	}
+
+	.hero-chip[aria-pressed='true'] {
+		border-color: var(--color-brand-accent);
+		background: var(--color-brand-accent);
+		color: var(--color-brand-accent-foreground);
+	}
+
+	.hero-chip[aria-pressed='true']:hover {
+		background: var(--color-brand-accent);
+		border-color: var(--color-brand-accent);
+		opacity: 0.9;
+		transform: translateY(-1px);
+	}
+
+	.hero-service-choices {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+		margin-top: clamp(1.5rem, 3vw, 2rem);
+	}
+
+	.hero-service-choices[hidden] {
+		display: none;
+	}
+
+	.hero-service-choices-label {
+		margin: 0;
+		font-size: 0.875rem;
+		color: var(--color-brand-muted);
+	}
+
+	.hero-service-choices-list {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.65rem;
+	}
+
+	.hero-service-choices-contact {
+		font-size: 0.8125rem;
+		font-weight: 500;
+		color: var(--color-brand-foreground);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	/* The service-choice links inside .hero-service-choices-list are created
+	   at runtime (document.createElement), so they never receive Astro's
+	   build-time style-scoping attribute — :global() is required or the
+	   .hero-chip rules above would never match them. */
+	:global(.hero-service-choices-list a) {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.55rem 1.1rem;
+		border: 1px solid var(--color-brand-border);
+		border-radius: 999px;
+		background: var(--color-brand-bg);
+		color: var(--color-brand-foreground);
+		font-size: 0.875rem;
+		font-weight: 500;
+		text-decoration: none;
+		cursor: pointer;
+		transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+	}
+
+	:global(.hero-service-choices-list a:hover) {
+		background: var(--color-brand-surface);
+		border-color: var(--color-brand-foreground);
+		transform: translateY(-1px);
+	}
+
+	:global(.hero-service-choices-list a:focus-visible) {
+		outline: 2px solid var(--color-brand-foreground);
+		outline-offset: 2px;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	@media (max-width: 480px) {
+		.hero-prompt {
+			padding: 0.95rem 0.65rem 0.95rem 1.1rem;
+		}
+
+		.hero-chip {
+			font-size: 0.8125rem;
+			padding: 0.5rem 0.9rem;
+		}
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap';
+	import { initGridRipple } from '../../scripts/hero-grid-ripple';
+	import { burstChipParticles } from '../../scripts/chip-burst';
+	import { setKeyboardSoundEnabled, isKeyboardSoundEnabled, playTypeSound, playDeleteSound } from '../../scripts/keyboard-sound';
+
+	interface ServiceSummary {
+		slug: string;
+		title: string;
+		tag: string;
+		blurb: string;
+	}
+
+	const serviceDataEl = document.getElementById('hero-service-data');
+	const allServices: ServiceSummary[] = serviceDataEl ? JSON.parse(serviceDataEl.textContent ?? '[]') : [];
+
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const isSmallViewport = window.innerWidth < 640;
+
+	const EXAMPLE_PROMPTS = [
+		"I want to build a website for my business.",
+		"I want to develop a mobile application.",
+		"I want to automate my business with AI.",
+		"I want to grow my social media presence.",
+		"I want to create a memorable brand identity.",
+	];
+
+	const TYPE_SPEED = [35, 75] as const;
+	const DELETE_SPEED = 25;
+	const READING_PAUSE = 1800;
+	const BETWEEN_PAUSE = 400;
+
+	const textarea = document.getElementById('hero-prompt-input') as HTMLTextAreaElement | null;
+	const placeholder = document.querySelector<HTMLElement>('.hero-prompt-placeholder');
+	const textEl = document.querySelector<HTMLElement>('.hero-prompt-placeholder-text');
+
+	if (textarea && placeholder && textEl) {
+		let timeoutId: number | undefined;
+		let promptIndex = 0;
+		let running = false;
+
+		const randomDelay = ([min, max]: readonly [number, number]) => min + Math.random() * (max - min);
+
+		const clear = () => {
+			if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+		};
+
+		const typeChar = (charIndex: number) => {
+			const current = EXAMPLE_PROMPTS[promptIndex];
+			textEl.textContent = current.slice(0, charIndex);
+			playTypeSound();
+			if (charIndex < current.length) {
+				timeoutId = window.setTimeout(() => typeChar(charIndex + 1), randomDelay(TYPE_SPEED));
+			} else {
+				timeoutId = window.setTimeout(deleteStep, READING_PAUSE);
+			}
+		};
+
+		function deleteStep() {
+			const current = textEl!.textContent ?? '';
+			if (current.length > 0) {
+				textEl!.textContent = current.slice(0, -1);
+				playDeleteSound();
+				timeoutId = window.setTimeout(deleteStep, DELETE_SPEED);
+			} else {
+				promptIndex = (promptIndex + 1) % EXAMPLE_PROMPTS.length;
+				timeoutId = window.setTimeout(() => typeChar(1), BETWEEN_PAUSE);
+			}
+		}
+
+		const start = () => {
+			if (running) return;
+			running = true;
+			placeholder.removeAttribute('hidden');
+			promptIndex = 0;
+			textEl.textContent = '';
+			timeoutId = window.setTimeout(() => typeChar(1), BETWEEN_PAUSE);
+		};
+
+		const stop = () => {
+			running = false;
+			clear();
+			placeholder.setAttribute('hidden', '');
+		};
+
+		if (prefersReducedMotion) {
+			textEl.textContent = EXAMPLE_PROMPTS[0];
+		} else {
+			start();
+		}
+
+		textarea.addEventListener('focus', stop);
+
+		textarea.addEventListener('blur', () => {
+			if (!prefersReducedMotion && textarea.value.trim() === '') start();
+		});
+
+		// Moving away from the screen (switching tabs/apps, minimizing) can
+		// itself blur the textarea — which, if it's empty, would otherwise
+		// restart this animation (and its sound) while nobody can see it
+		// typing. Pause for as long as the page/window isn't actually
+		// visible, and only pick back up once it is.
+		const canResume = () => !prefersReducedMotion && document.activeElement !== textarea && textarea.value.trim() === '';
+
+		const pause = () => stop();
+		const resume = () => {
+			if (!document.hidden && document.hasFocus() && canResume()) start();
+		};
+
+		document.addEventListener('visibilitychange', () => {
+			if (document.hidden) pause();
+			else resume();
+		});
+
+		window.addEventListener('blur', pause);
+		window.addEventListener('focus', resume);
+	}
+
+	// --- Keyboard-sound toggle: disabled by default; enabling it is the
+	// user gesture that creates/resumes the AudioContext (see
+	// setKeyboardSoundEnabled in keyboard-sound.ts). ---
+
+	const soundToggle = document.querySelector<HTMLButtonElement>('[data-sound-toggle]');
+
+	soundToggle?.addEventListener('click', () => {
+		const next = !isKeyboardSoundEnabled();
+		setKeyboardSoundEnabled(next);
+		soundToggle.setAttribute('aria-pressed', String(next));
+		soundToggle.setAttribute('aria-label', next ? 'Mute keyboard typing sound' : 'Enable keyboard typing sound');
+	});
+
+	const chipButtons = document.querySelectorAll<HTMLButtonElement>('.hero-chip');
+
+	chipButtons.forEach((chip) => {
+		chip.addEventListener('click', () => {
+			chipButtons.forEach((other) => other.setAttribute('aria-pressed', String(other === chip)));
+			hideChoices();
+			burstChipParticles(chip);
+
+			if (!textarea) return;
+			const prompt = chip.dataset.prompt ?? '';
+			textarea.value = prompt;
+			textarea.focus();
+			textarea.setSelectionRange(prompt.length, prompt.length);
+		});
+	});
+
+	textarea?.addEventListener('input', () => {
+		chipButtons.forEach((chip) => chip.setAttribute('aria-pressed', 'false'));
+		hideChoices();
+	});
+
+	// --- Send button: route the visitor to the relevant service, or to
+	// contact when the request doesn't clearly point at just one. ---
+
+	interface ServiceInfo {
+		slug: string;
+		title: string;
+	}
+
+	const form = document.querySelector<HTMLFormElement>('.hero-prompt');
+	const choicesPanel = document.querySelector<HTMLElement>('[data-service-choices]');
+	const choicesList = document.querySelector<HTMLElement>('[data-service-choices-list]');
+
+	// Hand-picked synonyms layered on top of each service's own title/tag/
+	// blurb, so free-text input matches without duplicating that copy.
+	const EXTRA_KEYWORDS: Record<string, string[]> = {
+		website: [
+			'website', 'web site', 'site', 'web app', 'web application', 'landing page',
+			'webpage', 'online store', 'e-commerce', 'ecommerce', 'mobile app', 'mobile application',
+		],
+		'ai-integration': [
+			'ai', 'artificial intelligence', 'chatbot', 'automation', 'automate', 'workflow',
+			'virtual assistant', 'machine learning',
+		],
+		'seo-aeo': [
+			'seo', 'search engine', 'google', 'ranking', 'rank', 'visibility', 'aeo',
+			'answer engine', 'generative engine', 'chatgpt',
+		],
+		'digital-marketing': [
+			'marketing', 'campaign', 'ads', 'advertising', 'social media', 'email marketing',
+			'facebook', 'instagram', 'paid social',
+		],
+		'graphic-design-printing': [
+			'logo', 'brand identity', 'branding', 'graphic design', 'print', 'printing',
+			'brochure', 'banner', 'poster', 'business card',
+		],
+		'corporate-merchandising': [
+			'merchandise', 'merch', 'swag', 'apparel', 't-shirt', 'tshirt', 'mug',
+			'promotional product', 'gift', 'uniform',
+		],
+	};
+
+	const serviceDictionary = allServices.map((service) => ({
+		slug: service.slug,
+		title: service.title,
+		keywords: Array.from(
+			new Set(
+				[service.title, service.tag, service.blurb, ...(EXTRA_KEYWORDS[service.slug] ?? [])].map((phrase) =>
+					phrase.toLowerCase(),
+				),
+			),
+		),
+	}));
+
+	const containsKeyword = (normalizedText: string, keyword: string) => {
+		if (keyword.includes(' ')) return normalizedText.includes(keyword);
+		const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		return new RegExp(`\\b${escaped}\\b`).test(normalizedText);
+	};
+
+	const matchServices = (text: string): Array<ServiceInfo & { score: number }> => {
+		const normalized = text.toLowerCase().trim();
+		if (!normalized) return [];
+		return serviceDictionary
+			.map((entry) => ({
+				slug: entry.slug,
+				title: entry.title,
+				score: entry.keywords.reduce((count, kw) => (containsKeyword(normalized, kw) ? count + 1 : count), 0),
+			}))
+			.filter((match) => match.score > 0)
+			.sort((a, b) => b.score - a.score);
+	};
+
+	const hideChoices = () => {
+		if (choicesPanel) choicesPanel.hidden = true;
+		if (choicesList) choicesList.replaceChildren();
+	};
+
+	const showChoices = (candidates: ServiceInfo[]) => {
+		if (!choicesPanel || !choicesList) return;
+		choicesList.replaceChildren(
+			...candidates.map((service) => {
+				const link = document.createElement('a');
+				link.href = `/services/${service.slug}`;
+				link.textContent = service.title;
+				return link;
+			}),
+		);
+		choicesPanel.hidden = false;
+	};
+
+	const goToService = (slug: string) => {
+		window.location.href = `/services/${slug}`;
+	};
+
+	const goToContact = (value: string) => {
+		window.location.href = value ? `/contact?brief=${encodeURIComponent(value)}` : '/contact';
+	};
+
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		if (!textarea) return;
+		hideChoices();
+
+		const value = textarea.value.trim();
+		const pressedChip = Array.from(chipButtons).find((chip) => chip.getAttribute('aria-pressed') === 'true');
+
+		if (pressedChip) {
+			const slugs = (pressedChip.dataset.services ?? '').split(',').filter(Boolean);
+			if (slugs.length === 1) {
+				goToService(slugs[0]);
+			} else if (slugs.length > 1) {
+				const candidates = slugs
+					.map((slug) => allServices.find((service) => service.slug === slug))
+					.filter((service): service is (typeof allServices)[number] => Boolean(service));
+				showChoices(candidates);
+			} else {
+				goToContact(value);
+			}
+			return;
+		}
+
+		const matches = matchServices(value);
+		if (matches.length === 0) {
+			goToContact(value);
+			return;
+		}
+
+		const [top, second] = matches;
+		if (!second || top.score > second.score) {
+			goToService(top.slug);
+			return;
+		}
+
+		const topScore = top.score;
+		showChoices(matches.filter((match) => match.score === topScore));
+	});
+
+	// --- Entrance animation: a brief staggered reveal on load. Skipped on
+	// small viewports and under reduced motion, per the project's animation
+	// standards — content is simply visible immediately in those cases. ---
+
+	if (!prefersReducedMotion && !isSmallViewport) {
+		const entranceEls = [
+			document.querySelector('.hero-heading'),
+			document.querySelector('.hero-subheading'),
+			document.querySelector('.hero-prompt'),
+			document.querySelector('.hero-chips'),
+		].filter((el): el is Element => el !== null);
+
+		if (entranceEls.length > 0) {
+			gsap.set(entranceEls, { opacity: 0, y: 18 });
+			gsap.to(entranceEls, {
+				opacity: 1,
+				y: 0,
+				duration: 0.7,
+				ease: 'power3.out',
+				stagger: 0.1,
+				delay: 0.1,
+			});
+		}
+	}
+
+	// --- Background grid + mouse ripple: ported from ConnectedHero-hover's
+	// floor-grid sub-system (see src/scripts/hero-grid-ripple.ts). Fires
+	// once on load and isn't torn down — this is a static multi-page site
+	// with no client-side router, so a full navigation already releases
+	// its listeners/observers/rAF for free, same as the rest of this
+	// script's untracked timers (the typewriter, the chip listeners). ---
+
+	const heroSection = document.querySelector<HTMLElement>('.hero');
+	const heroGridCanvas = document.querySelector<HTMLCanvasElement>('.hero-grid');
+
+	if (heroSection && heroGridCanvas) {
+		initGridRipple(heroSection, heroGridCanvas);
+	}
+
+	// --- Submit button micro-interaction: a quick tactile "press" rather
+	// than relying on the opacity hover alone. ---
+
+	const submitButton = document.querySelector<HTMLButtonElement>('.hero-prompt-submit');
+
+	if (!prefersReducedMotion && submitButton) {
+		submitButton.addEventListener('click', () => {
+			gsap.fromTo(submitButton, { scale: 0.88 }, { scale: 1, duration: 0.35, ease: 'back.out(3)' });
+			burstChipParticles(submitButton);
+		});
+	}
+
+	// --- Chip/submit glow bubble: same visual recipe as the circuit-pulse
+	// glow in ConnectedHero-hover.astro (a soft radial glow plus a bright
+	// core), tracking the pointer instead of traveling along a path. The
+	// CSS above reveals it on hover/focus; this just keeps --glow-x/
+	// --glow-y under the cursor while hovering. ---
+
+	if (!prefersReducedMotion) {
+		const glowTargets = document.querySelectorAll<HTMLElement>('.hero-chip, .hero-prompt-submit');
+
+		glowTargets.forEach((el) => {
+			el.addEventListener('pointermove', (event) => {
+				const rect = el.getBoundingClientRect();
+				el.style.setProperty('--glow-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+				el.style.setProperty('--glow-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+			});
+		});
+	}
+</script>
