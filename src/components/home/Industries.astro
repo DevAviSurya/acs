@@ -1,67 +1,20 @@
 ---
-import Landmark from '@lucide/astro/icons/landmark';
-import ShoppingBag from '@lucide/astro/icons/shopping-bag';
-import Utensils from '@lucide/astro/icons/utensils';
-import HeartPulse from '@lucide/astro/icons/heart-pulse';
-import GraduationCap from '@lucide/astro/icons/graduation-cap';
-import Rocket from '@lucide/astro/icons/rocket';
-import Building from '@lucide/astro/icons/building';
-import Store from '@lucide/astro/icons/store';
-
-const industries = [
-	{
-		label: 'Professional Services',
-		icon: Landmark,
-		description: 'Polished collateral and internal tools firms can put in front of clients.',
-	},
-	{
-		label: 'Retail & E-commerce',
-		icon: ShoppingBag,
-		description: 'Storefronts, campaign materials, and branded merchandise that move product.',
-	},
-	{
-		label: 'Hospitality & Events',
-		icon: Utensils,
-		description: 'Signage, merchandise, and booking tools for guest-facing teams.',
-	},
-	{
-		label: 'Healthcare',
-		icon: HeartPulse,
-		description: 'Patient-facing materials and secure, compliant internal systems.',
-	},
-	{
-		label: 'Education',
-		icon: GraduationCap,
-		description: 'Campus signage, enrollment tools, and branded materials.',
-	},
-	{
-		label: 'Technology & Startups',
-		icon: Rocket,
-		description: 'Product builds, brand identity, and launch-ready collateral.',
-	},
-	{
-		label: 'Government & Public Sector',
-		icon: Building,
-		description: 'Public-facing print, signage, and citizen-facing applications.',
-	},
-	{
-		label: 'Franchise & Multi-location',
-		icon: Store,
-		description: 'Consistent branding and marketing held to spec across every location.',
-	},
-];
+import { industries } from '../../data/industries';
 ---
 
-<section class="bg-brand-bg py-20 sm:py-28" data-animate>
-	<div class="mx-auto max-w-7xl px-6 lg:px-8">
-		<div class="max-w-2xl">
-			<p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">Who we serve</p>
-			<h2 class="mt-3 text-3xl font-semibold tracking-tight text-brand-foreground sm:text-4xl">
+<section class="bg-brand-bg py-20 sm:py-28">
+	<div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+		<p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent font-heading" data-reveal="up">Who we serve</p>
+		<div class="mt-6 flex flex-col items-center gap-10 lg:gap-8">
+			<h2 class="mt-3 text-3xl font-semibold tracking-tight text-brand-foreground sm:text-4xl " data-reveal="text">
 				Industries we work with
 			</h2>
 		</div>
 
-		<div class="mt-12 grid gap-px overflow-hidden rounded-2xl border border-brand-border/70 bg-brand-border/70 sm:grid-cols-2 lg:grid-cols-4">
+		<div
+			class="mt-12 grid gap-px overflow-hidden rounded-2xl border border-brand-border/70 bg-brand-border/70 sm:grid-cols-2 lg:grid-cols-4"
+			data-reveal="stagger"
+		>
 			{industries.map((industry) => (
 				<div class="flex flex-col gap-3 bg-brand-bg p-6">
 					<industry.icon class="h-6 w-6 text-brand-accent" aria-hidden="true" stroke-width={1.75} />

@@ -103,20 +103,20 @@ const servicePanels: Record<string, 'website' | 'ai' | 'seo' | 'marketing' | 'de
 };
 ---
 
-<section id="services" class="bg-brand-bg py-20 sm:py-28" data-animate>
+<section id="services" class="bg-brand-bg py-20 sm:py-28">
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="max-w-2xl">
-			<p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">What we do</p>
-			<h2 class="mt-3 text-3xl font-semibold tracking-tight text-brand-foreground sm:text-4xl">
+			<p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent" data-reveal="up">What we do</p>
+			<h2 class="mt-3 text-3xl font-semibold tracking-tight text-brand-foreground sm:text-4xl" data-reveal="text">
 				Six services, one accountable partner
 			</h2>
-			<p class="mt-4 text-base leading-relaxed text-brand-muted">
+			<p class="mt-4 text-base leading-relaxed text-brand-muted" data-reveal="up">
 				From the website and AI tools you run on to the marketing, design, and merchandise your customers
 				see — we cover it end to end, so you're not managing six different vendors.
 			</p>
 		</div>
 
-		<div class="service-grid mt-12 overflow-hidden rounded-2xl border border-brand-border">
+		<div class="service-grid mt-12 overflow-hidden rounded-2xl border border-brand-border" data-reveal="stagger">
 			{allServices.map((service) => (
 				<a
 					href={`/services/${service.slug}`}

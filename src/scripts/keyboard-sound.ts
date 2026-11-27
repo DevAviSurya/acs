@@ -86,19 +86,22 @@ function playClick(kind: KeystrokeKind): void {
 	const noiseGain = ctx.createGain();
 	const peak = MASTER_VOLUME * randomBetween(0.7, 1);
 	noiseGain.gain.setValueAtTime(0, now);
-	noiseGain.gain.linearRampToValueAtTime(peak, now + randomBetween(0.001, 0.004));
-	noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + randomBetween(0.025, 0.05));
+	noiseGain.gain.linearRampToValueAtTime(peak, now + randomBetween(0.001, 0.003));
+	noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + randomBetween(0.012, 0.022));
 
 	// A faint, inconsistent low-end thump underneath the click — real
 	// keyboard switches don't all bottom out with the same body resonance,
-	// so this is sometimes barely present rather than a fixed drone.
+	// so this is sometimes barely present rather than a fixed drone. Kept
+	// short and quiet enough to fuse into the click transient above instead
+	// of ringing on its own, which otherwise reads as a separate "tock"
+	// (i.e. a ticking clock) rather than one keyboard clack.
 	const body = ctx.createOscillator();
 	body.type = pick(['triangle', 'sine'] as const);
-	body.frequency.value = randomBetween(90, 260);
+	body.frequency.value = randomBetween(140, 320);
 
 	const bodyGain = ctx.createGain();
-	bodyGain.gain.setValueAtTime(MASTER_VOLUME * randomBetween(0.08, 0.3), now);
-	bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + randomBetween(0.015, 0.03));
+	bodyGain.gain.setValueAtTime(MASTER_VOLUME * randomBetween(0.04, 0.14), now);
+	bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + randomBetween(0.008, 0.015));
 
 	// A different stereo position per stroke, like different physical keys
 	// rather than one point repeating in place.
@@ -110,9 +113,9 @@ function playClick(kind: KeystrokeKind): void {
 	panner.connect(ctx.destination);
 
 	noise.start(now);
-	noise.stop(now + 0.06);
+	noise.stop(now + 0.03);
 	body.start(now);
-	body.stop(now + 0.04);
+	body.stop(now + 0.02);
 }
 
 export function setKeyboardSoundEnabled(value: boolean): void {

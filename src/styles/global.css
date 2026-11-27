@@ -1,17 +1,31 @@
 @import "tailwindcss";
 @import "@fontsource-variable/rethink-sans";
+@import "@fontsource-variable/plus-jakarta-sans";
 
 :root {
 	--font-rethink-sans: "Rethink Sans Variable";
+	--font-plus-jakarta-sans: "Plus Jakarta Sans Variable";
 }
 
 html {
-	font-family: var(--font-rethink-sans), "Rethink Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+	font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+	/* Baseline weight for regular content; headings and any element with an
+	   explicit font-* utility (font-semibold, font-bold, ...) override this. */
+	font-weight: 500;
 	/* Reserve the scrollbar gutter up front so pinning a tall section (see
 	   AppleComputerHero) never shifts the viewport width mid-refresh — GSAP's
 	   ScrollTrigger reacts to that width change with a reentrant refresh that
 	   can throw inside its own pin bookkeeping. */
 	scrollbar-gutter: stable;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-rethink-sans), "Rethink Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 @theme {
@@ -23,9 +37,26 @@ html {
 	--color-brand-surface: #f7f7f7;
 	--color-brand-border: #d6d6d6;
 	--color-brand-foreground: #000;
-	--color-brand-muted: #595959;
-	--color-brand-accent: #201e1b;
+	--color-brand-muted: #7b7a7a;
+	--color-brand-accent: #333;
 	--color-brand-accent-foreground: #eae8e4;
+
+	/* Rethink Sans for headings, Plus Jakarta Sans for body/content —
+	   exposed as theme tokens too, so a component can opt in via
+	   font-heading/font-sans utilities instead of relying on the bare tag
+	   selectors above. */
+	--font-heading: var(--font-rethink-sans), "Rethink Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+	--font-sans: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* SplitText's line-mask reveal (src/scripts/scroll-reveal.ts, data-reveal="text")
+   wraps each visual line in an overflow-clip box sized to the line's own
+   line-height. Tailwind's larger type sizes ship a tighter line-height than
+   the glyphs' actual bounding box (text-5xl is line-height: 1), which is
+   harmless unmasked but hard-clips descenders once wrapped. Loosen it only
+   for masked headings, before SplitText measures lines. */
+[data-reveal="text"] {
+	line-height: 1.2;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -37,18 +68,5 @@ html {
 		transition-duration: 0.01ms !important;
 		scroll-behavior: auto !important;
 	}
-}
-
-/* Added by src/scripts/animations.ts only once an element is observed, so
-   content is never hidden without JS. */
-.reveal-on-scroll {
-	opacity: 0;
-	transform: translateY(16px);
-	transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.reveal-on-scroll.is-visible {
-	opacity: 1;
-	transform: none;
 }
 

@@ -17,7 +17,7 @@ import { mainNav } from '../data/navigation';
 			{mainNav.map((item) => (
 				<a
 					href={item.href}
-					class="text-sm font-medium text-brand-muted transition-colors hover:text-brand-foreground"
+					class="text-sm font-medium text-brand-muted transition-colors uppercase hover:text-brand-foreground"
 				>
 					{item.label}
 				</a>
@@ -57,7 +57,7 @@ import { mainNav } from '../data/navigation';
 			{mainNav.map((item) => (
 				<a
 					href={item.href}
-					class="rounded-md px-3 py-2 text-sm font-medium text-brand-muted hover:bg-brand-surface hover:text-brand-foreground"
+					class="rounded-md px-3 py-2 text-sm font-medium text-brand-accent uppercase hover:bg-brand-surface hover:text-brand-foreground"
 				>
 					{item.label}
 				</a>

@@ -176,7 +176,7 @@ function buildCardTexture(service: ServiceCardData): THREE.CanvasTexture {
 	wrapText(ctx, service.title, w / 2, 400, w - 140, 50);
 
 	ctx.fillStyle = MUTED;
-	ctx.font = '400 27px "Rethink Sans Variable", "Rethink Sans", sans-serif';
+	ctx.font = '500 27px "Plus Jakarta Sans Variable", "Plus Jakarta Sans", sans-serif';
 	wrapText(ctx, service.blurb, w / 2, 490, w - 160, 36);
 
 	const texture = new THREE.CanvasTexture(canvas);
